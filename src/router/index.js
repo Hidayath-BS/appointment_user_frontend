@@ -131,6 +131,7 @@ const router = new Router({
           name: 'User Queries Reply',
           component: () => import('../pages/UserQueryReply')
         },
+              
         
       ]
     },

@@ -26,142 +26,6 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <!-- Typography -->
-        <!-- <v-list-tile to="querylist">
-          <v-list-tile-action>
-            <v-icon>format_size</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Typography</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>  -->
-       <!-- Typography -->
-
-        <!-- Forms controls -->
-        <!-- <v-list-group prepend-icon="vertical_split" no-action>
-          <v-list-tile slot="activator">
-            <v-list-tile-content>
-              <v-list-tile-title>Form Inputs & Controls</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/text-inputs">
-            <v-list-tile-content>
-              <v-list-tile-title>Text Inputs</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon></v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-          <v-list-tile to="/select-boxes">
-            <v-list-tile-content>
-              <v-list-tile-title>Selects</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon></v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-          <v-list-tile to="/selection-controls">
-            <v-list-tile-content>
-              <v-list-tile-title>Selection Controls</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon></v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list-group> -->
-        <!-- Forms controls -->
-
-        <!-- Buttons -->
-        <!-- <v-list-tile to="/buttons">
-          <v-list-tile-action>
-            <v-icon>touch_app</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Buttons</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
-        <!-- Buttons -->
-
-        <!-- Cards -->
-        <!-- <v-list-tile to="/cards">
-          <v-list-tile-action>
-            <v-icon>view_quilt</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Cards</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
-        <!-- Cards -->
-
-        <!-- Alerts -->
-        <!-- <v-list-tile to="/alerts">
-          <v-list-tile-action>
-            <v-icon>report_problem</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Alerts</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
-        <!-- Alerts -->
-
-        <!-- Data Tables -->
-        <!-- <v-list-tile to="/data-tables">
-          <v-list-tile-action>
-            <v-icon>list_alt</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Data table</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
-        <!-- Data Tables -->
-
-        <!-- Dialogs -->
-        <!-- <v-list-tile to="/dialogs">
-          <v-list-tile-action>
-            <v-icon>filter_none</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Dialogs</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
-        <!-- Dialogs -->
-
-        <!-- Pickers -->
-        <!-- <v-list-group prepend-icon="calendar_today" no-action>
-          <v-list-tile slot="activator">
-            <v-list-tile-content>
-              <v-list-tile-title>Pickers</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/date-pickers">
-            <v-list-tile-content>
-              <v-list-tile-title>Date Pickers</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon></v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-          <v-list-tile to="/time-pickers">
-            <v-list-tile-content>
-              <v-list-tile-title>Time Pickers</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon></v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list-group> -->
-        <!-- Pickers -->
-
-        <!-- Snackbars -->
-        <!-- <v-list-tile to="/snackbars">
-          <v-list-tile-action>
-            <v-icon>announcement</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Snackbars</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
-        <!-- Snackbars -->
 
         <!-- appointment -->
          <v-list-tile  to="/appointmentform">
@@ -183,7 +47,11 @@
           <v-list-tile-content>
             <v-list-tile-title>query List</v-list-tile-title>
           </v-list-tile-content>
-        </v-list-tile>        
+        </v-list-tile> 
+
+       
+
+
       </v-list>
 
       <!-- Queries -->

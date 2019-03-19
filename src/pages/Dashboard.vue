@@ -40,12 +40,149 @@
 					      <td>{{ props.item.name }}</td>
 					      <td class="text-xs-left">{{ props.item.calories }}</td>
 					      <td class="text-xs-left">{{ props.item.fat }}</td>
-					      <td class="text-xs-left">{{ props.item.fat }}</td>	
-								<td class="justify-left layout px-0">
-              <v-btn icon class="mx-0" @click="editItem(props.item)">
-                <v-icon color="teal">edit</v-icon>
-              </v-btn>
+					      <td class="text-xs-left">{{ props.item.fat }}</td>
+                <td class="text-xs-right"><v-btn slot="activator" fab small color="blue" dark><v-icon white>edit</v-icon></v-btn></td>	
+								<td class="justify-center layout px-0">
+            
+							<v-dialog v-model="dialog1" max-width="1000px"> 
+        <v-btn slot="activator" fab small color="blue" dark><v-icon white>edit</v-icon></v-btn>
+	
+        <v-card>
+          <v-card-title>
+            <span class="headline">Reshedule Appointment</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md4>
+					    <v-layout wrap>
+							<v-flex xs12 sm6 md6>Requested Date:12-01-2018</v-flex> 
+              <v-flex xs12 sm6 md12><v-text-field label="Remarks"></v-text-field></v-flex>
+      <br />
+							<v-flex xs12 md6></v-flex>
+							
+            <v-flex xs12 sm6 md12>
+              <v-menu
+                      ref="menu"
+                      lazy
+                      :close-on-content-click="false"
+                      v-model="menu1"
+                      transition="scale-transition"
+                      offset-y
+                      full-width
+                      :nudge-right="40"
+                      min-width="150px"
+                      :return-value.sync="date">
+                      <v-text-field
+                        slot="activator"
+                        label="Resheduled Date *"
+                        v-model="dateFrom"
+                        prepend-icon="event"
+                        readonly
+                      ></v-text-field>
+                      <v-date-picker v-model="dateFrom" no-title scrollable>
+                        
+                      </v-date-picker>
+                    </v-menu>
+      </v-flex>
+			
+ <!-- <v-flex xs6 md4>
+        <v-date-picker v-model="picker2" color="info darken-1"></v-date-picker>
+      </v-flex>
+   -->
+   
+        <v-radio-group v-model="ex7">
+               <v-card-text>
+                   <v-layout row wrap>
+                      
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                           
+                           <br/><v-radio color="green" value="1" label="10.00AM to 11.00AM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex>
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                           
+                           <br/><v-radio color="green" value="2" label="11.00AM to 12.00AM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex>
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                           
+                           <br/><v-radio color="green" value="3" label="12.00AM to 1.00AM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex>
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                           
+                           <br/><v-radio color="green" value="4" label="1.00PM to 02.00PM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex>
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                           
+                           <br/><v-radio color="green" value="5" label="02.00PM to 03.00PM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex>
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                           
+                           <br/><v-radio color="green" value="6"  label="03.00PM to 04.00PM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex>
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                          
+                           <br/><v-radio color="green" value="7" label=" 04.00PM to 05.00PM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex>
+                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
+                   <v-card>
+                       <v-card-text>
+                           <br/><v-radio color="green" value="8" label="05.00PM to 06.00PM"></v-radio>
+                       </v-card-text>
+                   </v-card>
+                       </v-flex> 
+                                                                                                                                                                                      
+                   </v-layout>
+                </v-card-text> 
+                 </v-radio-group>      
+              
+               <br/>
+               <v-subheader>Start Date and Time: 30-03-2019 11:00 AM</v-subheader>
+                            
+      
+<v-subheader>End Date and Time: 30-03-2019 12:00 PM</v-subheader>
+     
+              </v-layout>
+            </v-container>
+            <small>*Indicates required field</small>
+           
+
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            
+            <v-btn color="error" @click.native="dialog1 = false" round>Close</v-btn>
+            <v-btn color="success" @click.native="dialog1 = false" round>Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
             </td>
+
 								<td><v-btn icon class="mx-0" @click="deleteItem(props.item)">
                 <v-icon color="pink">delete</v-icon>
               </v-btn></td>							
@@ -358,6 +495,7 @@
           { text: 'Time', value: 'Time',align: 'left', },
           { text: 'Status', value: 'status',align: 'left', },
           { text: 'Edit', value: 'Edit',align: 'left', },
+          { text: 'Reshedule', value: 'Edit',align: 'left', },          
           { text: 'Delete', value: 'Delete',align: 'left', }
 				],
 				headers2: [
