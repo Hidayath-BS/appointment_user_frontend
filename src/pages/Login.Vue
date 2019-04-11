@@ -2,34 +2,43 @@
 <v-app id="login">
     <div id="app">
   <v-container>
-    <v-layout row class="text-xs-center" style="border-radius:9%">
+    <v-layout row wrap class="text-xs-center" style="border-radius:9%">
       <!-- <v-flex xs4>
         <v-card height="500px" style="background-color: lightblue"></v-card>
       </v-flex> -->
-      <v-flex xs6 class="grey lighten-4">
+      <v-flex xs6 offset-xs3 class="grey lighten-4">
         <v-container style="top: 10%;height:500px;border:2px solid blue" class="text-xs-center">
-          <img src="/static/BN-logo-47.png" alt="Bangalore Nethralaya" width="380" height="80">
+          <img src="../static/BN-logo-47.png" alt="Bangalore Nethralaya" width="380" height="80">
           <br><br><v-card flat>
             <v-card-title primary-title>
               <h4>Login Here</h4>
             </v-card-title>
             <v-form>
               <v-flex xs12 sm11>
-            <v-text-field prepend-icon="person" name="Username" label="Username"></v-text-field>
-            <v-text-field prepend-icon="lock" name="Password" label="Password" type="password"></v-text-field>
+            <v-text-field prepend-icon="person" name="Username" label="Username" v-model="model.username"></v-text-field>
+            <v-text-field prepend-icon="lock" name="Password" label="Password" type="password" v-model="model.password"></v-text-field>
             </v-flex>
             <v-card-actions>
+              <v-layout row wrap>
+              <v-flex xs12>
+              <p><a @click="forgot()">Forgot Password</a></p>
+              </v-flex>
               <v-layout row wrap>
                 <v-flex xs4>
                 </v-flex>
               <v-flex xs4>
-              <v-btn primary block color="primary">Login</v-btn>
+              <v-btn primary block color="primary" @click="login">Login</v-btn>
               </v-flex>
+              <v-flex xs4>
+                </v-flex>
               </v-layout>
+              <v-flex xs12>
+                
+              <br/><p><a @click="register()">Dont have account? Sign up</a></p> 
+              </v-flex> 
+              </v-layout>            
             </v-card-actions>
-             <br> <v-flex>
-              <p><a href="/#/registration">Don't Have an account?SignUp Here</a></p>
-              </v-flex><br>
+             <br> 
             </v-form>
           </v-card>
         </v-container>
@@ -41,17 +50,120 @@
 </template>
 
 <script>
- 
+import {APIService} from '../APIService.js';
+import axios from 'axios';
+const API_URL = 'http://server.mahatinnovations.com:9091';
+const apiService = new APIService();
+
+export default {
+  data: () => ({
+    loading: false,
+    model: {
+      username: '',
+      password: ''
+    }
+  }),
+
+  methods: {
+    login(){
+    let flag
+    return axios.post('http://server.mahatinnovations.com:9091/auth',{
+      email: this.model.username,
+      password: this.model.password,
+    })
+    .then(response=>
+    {
+      console.log(response);
+      
+      if(response.status==200){
+        flag=true
+        const token="Bearer"+' '+response.data.token;
+        localStorage.setItem('token', token);
+        
+        this.getUserRole();
+        
+        console.log("Bearer"+' '+response.data.token);
+         
+       
+      }
+      else{
+        alert("response not 200 Someting went wrong");
+        flag=false
+      console.log("Flag"+' '+flag);
+      }
+    },err=>{
+      alert("response is not comming Something went wrong");
+    })
+  },
+
+  getUserRole(){
+    let authorities = [];
+    
+    let url = `${API_URL}/User`;
+    const auth = {
+      headers: { Authorization: localStorage.getItem('token') }
+    };
+
+    return apiService.getloggedinUser().then((response)=>{
+      console.log(response);
+      authorities = response;
+      console.log(authorities.length);
+      
+      let fail = 1;
+      for(let i =0; i< authorities.authority.length; i++){
+        console.log(authorities.authority[i].role);
+        if(authorities.authority[i].role == "PATIENT"){
+          
+          localStorage.setItem("role","PATIENT");
+          this.successLogin();
+          fail = 0;
+          break;
+        }else{
+
+          }
+          }
+      if(fail == 1){
+        this.faliureLogin();
+      }
+
+
+    })
+  },
+  
+
+  successLogin(){
+    localStorage.setItem('loggedIn',1);
+    this.$router.push('/dashboard');
+  },
+  faliureLogin(){
+    localStorage.setItem('loggedIn',0);
+    localStorage.removeItem("token");
+    alert("You are Not a patient User");
+  },
+
+    forgot () {
+      this.loading = true;
+      setTimeout(() => {
+        this.$router.push('/forgotPassword');
+      }, 1000);
+    },
+
+    register(){
+      this.$router.push('/registration')
+    }
+
+  }
+
+};
 </script>
+
+
 <style scoped lang="css">
 #app{
-  margin-left: 450px;
+  /* margin-left: 450px; */
   margin-top: 50px;
   
 }
-/* #login{
-  background: url('/static/back.jpg');
-  background-repeat: no-repeat;
-} */
+
 
 </style>
