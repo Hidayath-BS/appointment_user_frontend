@@ -1,16 +1,11 @@
 <template>
   <div>
     <v-navigation-drawer fixed v-model="drawer" :class="$root.sidebarBg" class="darken-2" dark app>
-      <v-toolbar flat dark :class="$root.sidebarBg" class="darken-3">
+      <v-toolbar flat dark :class="$root.sidebarBg" class="darken-3 bg-logo">
         <v-list class="pa-0">
           <!-- <router-link to="/dashboard"> -->
-            <v-list-tile avatar>
-              <v-list-tile-avatar>
-                <img src="https://randomuser.me/api/portraits/men/85.jpg" >
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>John Leider</v-list-tile-title>
-              </v-list-tile-content>
+            <v-list-tile>
+              <img src="../static/BN-logo-47.png" width="100%" alt="LOGO">
             </v-list-tile>
           <!-- </router-link> -->
         </v-list>
@@ -37,6 +32,14 @@
           </v-list-tile-content>
         </v-list-tile>        
      
+        <v-list-tile to="/reschedule">
+          <v-list-tile-action>
+            <v-icon>event</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Reschedules</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
 <!-- queries -->
       
@@ -45,7 +48,7 @@
             <v-icon>edit</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>query List</v-list-tile-title>
+            <v-list-tile-title>Query List</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile> 
 
@@ -92,8 +95,11 @@
 
     </v-navigation-drawer>
     <v-toolbar fixed app light class="white">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title ></v-toolbar-title>
+      
+      <v-icon @click.stop="drawer = !drawer">menu</v-icon>
+      <v-toolbar-title>
+        AMS-BANGALORE NETHRALAYA
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- <v-btn flat class="hidden-sm-and-down">Link One</v-btn>
       <v-btn flat class="hidden-sm-and-down">Link Two</v-btn> -->
@@ -144,7 +150,7 @@
     name: 'Header',
     data () {
       return {
-        title: 'VueMax Admin',
+        title: 'AMS-USER',
         drawer: true,
         admins: [
           ['Management', 'people_outline'],
@@ -164,3 +170,8 @@
     }
   }
 </script>
+<style>
+.blue-grey.darken-3{
+  background: #eeeeee !important;
+}
+</style>

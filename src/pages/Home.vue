@@ -28,6 +28,18 @@
         
       }
     },
+     methods:{
+      checkForLogin(){
+        let loggedin = localStorage.getItem("loggedIn");
+        let token = localStorage.getItem("token");
+        if(loggedin != 1 || token == ""){
+          this.$router.push("/login");
+        }
+      }
+    },
+    mounted(){
+      this.checkForLogin();
+    },
     components: {
       'breadcrumbs': Breadcrumbs,
       'header-section': Header,

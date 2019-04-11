@@ -131,7 +131,37 @@ const router = new Router({
           name: 'User Queries Reply',
           component: () => import('../pages/UserQueryReply')
         },
-              
+        {
+          path: 'CancelAppointment/:aid',
+          name: 'Cancel Appointment',
+          component: () => import('../pages/CancelAppointment')
+        },
+        {
+          path: 'AskQuery',
+          name: 'AskQuery',
+          component: () => import('../pages/AskQuery')
+        }, 
+        {
+          path: 'Appointmentlist',
+          name: 'Appointment List',
+          title: 'Appointment List',
+          component: () => import('../pages/Appointmentlist')
+        },
+        {
+          path: 'reschedule/:id',
+          name: 'reschedule',
+          component: () => import('../pages/rescheduleappointment')
+        },
+        {
+          path: 'thankyou',
+          name: 'Thank You',
+          component: () => import('../pages/ThankYou')
+        },
+        {
+          path: 'reschedule',
+          name: 'Reschedule List',
+          component: () => import('../pages/resheduledappointmentList')
+        }
         
       ]
     },
@@ -144,6 +174,16 @@ const router = new Router({
       path: '/registration',
       name: 'Registration',
       component: () => import('../pages/Registration')
+    },
+    {
+      path: '/forgotPassword',
+      name: 'forgotPassword',
+      component: () => import('../pages/forgotPassword')
+    },
+    {
+      path: '/ResetPassword',
+      name: 'ResetPassword',
+      component: () => import('../pages/ResetPassword')
     },
   ]
 })

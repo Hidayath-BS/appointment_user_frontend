@@ -1,81 +1,19 @@
 <template>
-  <v-flex xs12 sm12>
-      <h2>Appointment Form</h2><br>
-      <v-card>
-      <v-card-text>
-    <v-layout row wrap>
-         <v-flex xs5>
-       <v-subheader>Appointment For &nbsp;
-            <v-radio-group row>
-                <v-radio label="Self" value="Self"></v-radio>
-                <v-radio label="Other" value="Other"></v-radio>
-            </v-radio-group>
-       </v-subheader>
-      </v-flex> 
-    </v-layout>
 
-    <v-layout row>
-            <v-flex xs12 sm3 >
-              <v-text-field type="text" label="Full Name"></v-text-field>
-            </v-flex> 
-            <v-flex xs12 sm3 offset-sm1>
-               <v-text-field label="Mobile Number" type="number"></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm3 offset-sm1>
-             <v-text-field type="text" label="Email"></v-text-field>
-            </v-flex>
-     </v-layout>
-
-     <v-layout row>
-            <v-flex xs12 sm3 >
-              <v-text-field type="number" label="Age"></v-text-field>
-            </v-flex> 
-            <v-flex xs12 sm3 offset-sm1>
-               <v-text-field type="text" label="Current Eye Problem" ></v-text-field>
-            </v-flex>
-            <v-flex xs12 sm3 offset-sm1>
-              <v-select
-                      :items="genders"
-                      label="Select Gender"
-                      item-text="gender"
-                      item-value="id"
-                      single-line
-                    ></v-select>
-            </v-flex>
-     </v-layout>
-
-     <v-layout row>
-           <v-flex xs12 sm3>
-              <v-select
-                      :items="branch"
-                      label="Select Branch"
-                      item-text="branch"
-                      item-value="id"
-                      single-line
-                    ></v-select>
-            </v-flex> 
-            <v-flex xs12 sm3 offset-sm1>
-              <v-select
-                      :items="genders"
-                      label="Apppointment type"
-                      item-text="appointmenttype"
-                      item-value="id"
-                      single-line
-                    ></v-select>
-            </v-flex>
-            <v-flex xs12 sm3 offset-sm1>
-              <v-select
-                      :items="genders"
-                      label="Available Doctors"
-                      item-text="doctors"
-                      item-value="id"
-                      single-line
-                    ></v-select>
-            </v-flex>
-     </v-layout>
-
-        <v-layout row wrap>
-            <v-flex xs3>
+<v-container fluid>
+  
+  <v-card>
+    <v-card-title>
+<h2>Appointment Form</h2>
+    </v-card-title>
+    <v-divider></v-divider>
+    <v-card-text>
+      <v-form
+      ref="form"
+      v-model="valid"
+      lazy-validation>
+      <v-layout row wrap>
+        <v-flex md3 xs12>
         <v-menu
           ref="menu"
           :close-on-content-click="false"
@@ -93,286 +31,586 @@
             v-model="date"
             label="Select Date"
             prepend-icon="event"
+            :rules="[v => !!v || 'Please Select the Appointment Date']"
             readonly
           ></v-text-field>
-          <v-date-picker v-model="date" no-title scrollable>
+          <v-date-picker v-model="date" :min="mindate" @change="getAvailableSlotsBranchWise()" no-title scrollable>
             <v-spacer></v-spacer>
             <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
             <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
           </v-date-picker>
         </v-menu>
-      </v-flex>
-        
-            <v-flex xs5>
-          <v-dialog v-model="dialog1" persistent max-width="900px">
-        <v-btn slot="activator" color="primary" dark>Time Slots</v-btn>
-      <v-card>
+      </v-flex> 
+      </v-layout>
+      <v-layout row wrap>
+            <v-flex xs12 md3>
+              <v-text-field type="text" label="Full Name"
+              :rules="[v => !!v || 'Please Enter Full Name']"
+               v-model="fullName"></v-text-field>
+            </v-flex> 
+            <v-flex xs12 md3 offset-md1>
+               <v-text-field label="Mobile Number"
+               :rules="[v => !!v || 'Please Enter Mobile Number']"
+                type="number" v-model="mobileNumber"></v-text-field>
+            </v-flex>
+            <v-flex xs12 md3 offset-md1>
+             <v-text-field type="text" label="Email" v-model="email"></v-text-field>
+            </v-flex>
+     </v-layout>
+
+     <v-layout row wrap>
+            <v-flex xs12 md3>
+            <v-menu
+            ref="dob"
+          :close-on-content-click="false"
+          v-model="menu1"
+          :nudge-right="40"
+          :return-value.sync="date"
+          lazy
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+          class="fields"
+            >
+              <v-text-field
+            slot="activator"
+            v-model="dob"
+            label="Select Date Of Birth"
+            prepend-icon="event"
+            :rules="[v => !!v || 'Please Select Your Date of Birth']"
+            readonly
+          ></v-text-field>
+          <v-date-picker v-model="dob"  no-title scrollable>
+            <v-spacer></v-spacer>
+            <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+            <v-btn flat color="primary" @click="$refs.dob.save(date)">OK</v-btn>
+          </v-date-picker>
+            </v-menu>
+            </v-flex> 
+            <v-flex xs12 md3 offset-md1>
+               <v-text-field type="text" label="Current Eye Problem" ></v-text-field>
+            </v-flex>
+            <v-flex xs12 md3 offset-md1>
+              <v-select
+                      :items="genders"
+                      label="Select Gender"
+                      item-text="gender"
+                      v-model="gender"
+                      item-value="id"
+                      :rules="[v => !!v || 'Please Select Your Gender']"
+                      single-line
+                    ></v-select>
+            </v-flex>
+     </v-layout>
+
+     <v-layout row wrap>
+           <v-flex xs12 md3>
+              <v-select
+                      :items="branchs"
+                      label="Select Branch"
+                      v-model="branch"
+                      item-text="branchName"
+                      item-value="id"
+                      :rules="[v => !!v || 'Please Enter Branch']"
+                      single-line
+                      class="fields"
+                      @change="filterBranchWise(branch)"
+                    ></v-select>
+            </v-flex> 
+            <v-flex xs12 md3 offset-md1>
+              <v-select
+                      :items="doctors"
+                      label="Available Doctors"
+                      item-text="username"
+                      v-model="doctor"
+                      item-value="id"
+                      :rules="[v => !!v || 'Please Select Doctor']"
+                      single-line
+                      @change="filterDoctorSlots(doctor)"
+                    ></v-select>
+            </v-flex>
+     </v-layout>
+
+        <v-layout row wrap>
+             <v-flex>
+          <v-card>
         <v-card-title>
             <span class="headline">Available Slots</span>
           </v-card-title>
-                 <v-radio-group v-model="ex7">
+          <v-card-text v-if="displayError">
+              <v-layout row warp>
+                <v-flex sm6 offset-sm3>
+                  <v-card color="primary">
+                    <v-card-text>
+                      No Slots Available 
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+          </v-card-text>
+
+
+                 <v-radio-group v-else v-model="slotid" :rules="[v => !!v || 'Please Select Appointment Slot']">
                <v-card-text>
                    <v-layout row wrap>
                       
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
+                       
+                   <v-card  v-for="(ava,i) in availSlots" :key="i">
+                     <v-flex sm12 style="padding-left:15px;padding-bottom:15px;">
                        <v-card-text>
-                           
-                           <br/><v-radio color="green" value="1" label="10.00AM to 11.00AM"></v-radio>
+                           <v-radio color="green" :value="ava.id" :label="ava.slot.slotName"></v-radio>
+                           <b> {{ ava.slot.startTime}} - {{ ava.slot.endTime}} </b>
                        </v-card-text>
-                   </v-card>
                        </v-flex>
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
-                       <v-card-text>
-                           
-                           <br/><v-radio color="green" value="2" label="11.00AM to 12.00AM"></v-radio>
-                       </v-card-text>
                    </v-card>
-                       </v-flex>
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
-                       <v-card-text>
-                           
-                           <br/><v-radio color="green" value="3" label="12.00AM to 1.00AM"></v-radio>
-                       </v-card-text>
-                   </v-card>
-                       </v-flex>
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
-                       <v-card-text>
-                           
-                           <br/><v-radio color="green" value="4" label="1.00PM to 02.00PM"></v-radio>
-                       </v-card-text>
-                   </v-card>
-                       </v-flex>
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
-                       <v-card-text>
-                           
-                           <br/><v-radio color="green" value="5" label="02.00PM to 03.00PM"></v-radio>
-                       </v-card-text>
-                   </v-card>
-                       </v-flex>
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
-                       <v-card-text>
-                           
-                           <br/><v-radio color="green" value="6"  label="03.00PM to 04.00PM"></v-radio>
-                       </v-card-text>
-                   </v-card>
-                       </v-flex>
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
-                       <v-card-text>
-                          
-                           <br/><v-radio color="green" value="7" label=" 04.00PM to 05.00PM"></v-radio>
-                       </v-card-text>
-                   </v-card>
-                       </v-flex>
-                       <v-flex xs2 style="padding-left:15px;padding-bottom:15px;">
-                   <v-card>
-                       <v-card-text>
-                           <br/><v-radio color="green" value="8" label="05.00PM to 06.00PM"></v-radio>
-                       </v-card-text>
-                   </v-card>
-                       </v-flex> 
+                       
                                                                                                                                                                                       
                    </v-layout>
                 </v-card-text> 
                  </v-radio-group>
-                  <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click.native="dialog1 = false">Close</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="dialog1 = false">Submit</v-btn>
-          </v-card-actions>
+                  
             </v-card>
-      </v-dialog>
-            </v-flex>
+      
+        </v-flex>
+        
+           
 
         </v-layout>
+
+    <v-divider></v-divider>
+
+  <br><hr><br> <h4><u>Clinical Details</u></h4><br>
+
+  <v-layout row wrap>
+    <v-flex xs12 md6>
+      <v-subheader>Are you diabetic? 
+        <v-spacer></v-spacer>
+                  <v-radio-group row v-model="diabetic" @change="selectDiabetic(diabetic)">
+                    <v-radio label="Yes" value="yes" color="blue" ></v-radio>
+                    <v-radio label="No" value="no" color="blue" ></v-radio>
+                  </v-radio-group> 
+      </v-subheader>
+    </v-flex>
+    <v-flex>
+      <div id="selectDiabetic" style="display:none">
+                    <v-text-field type="text" v-model="diabeticDuration" label="Enter duration" ></v-text-field>
+      </div>
+    </v-flex>
+
+    <v-spacer></v-spacer>
+    <v-flex xs12 md6>
+                    <v-subheader>Do you have Hypertension? 
+                      <v-spacer></v-spacer>
+                <v-radio-group row v-model="bp" @change="selectHp(bp)">
+                    <v-radio label="Yes" value="yes" color="blue" ></v-radio>
+                    <v-radio label="No" value="no" color="blue" ></v-radio>
+                </v-radio-group> 
+                </v-subheader>
+                
+      </v-flex>
+      <v-flex>
+        <div id="selectHp" style="display:none">
+                    <v-text-field type="text" v-model="bpDuration" label="Enter duration" ></v-text-field>
+        </div>
+      </v-flex>
+      <v-spacer></v-spacer>
+
+  </v-layout>
+
+  <v-layout row wrap>
+    <v-flex xs12 md6>
+      <v-subheader>Do you have any Cardiac condition? 
+        <v-spacer></v-spacer>
+                    <v-radio-group row v-model="cardiac" @change="selectCardiac(cardiac)">
+                    <v-radio label="Yes" value="yes" color="blue" ></v-radio>
+                    <v-radio label="No" value="no" color="blue"></v-radio>
+                </v-radio-group> 
+      </v-subheader>          
+    </v-flex>
+
+    <v-flex>
+      <div id="selectCardiac" style="display:none">
+                    <v-text-field type="text" v-model="cardiacDuration" label="Enter duration" ></v-text-field>
+      </div>
+    </v-flex>
+    <v-spacer></v-spacer>
+    <v-flex xs12 md6>
+      <v-subheader>Do you have Asthma? 
+        <v-spacer></v-spacer>
+                <v-radio-group row v-model="asthama" @change="selectAsthma(asthama)">
+                    <v-radio label="Yes" value="yes" color="blue" ></v-radio>
+                    <v-radio label="No" value="no" color="blue" ></v-radio>
+                </v-radio-group> 
+      </v-subheader>
+                
+    </v-flex>
+    <v-flex>
+      <div id="selectAsthma" style="display:none">
+                    <v-text-field type="text" v-model="asthamaDuration" label="Enter duration" ></v-text-field>
+      </div>
+    </v-flex>
+    <v-spacer></v-spacer>
+  </v-layout>
      
 
-       <br><hr><br> 
-
-       <v-flex>
-           <v-subheader>Can You add your known clinical details?<br>
-           (NOTE:This will Save your time at Hospital)&nbsp;&nbsp;&nbsp;
-               <v-radio-group row>
-                   <v-radio label = "Yes" value="yes" color="blue" @change="selectClinical1()"></v-radio>
-                   <v-radio label = "No" value = "no" color="blue" @change="selectClinical2()"></v-radio>
-               </v-radio-group>
-           </v-subheader>
-           <div id="selectClinical" style="display:none">
-       
-
-            <v-layout row>
-                <v-flex xs5>
-                <v-subheader>Are you diabetic? &nbsp;&nbsp;&nbsp;
-                    <v-radio-group row>
-                    <v-radio label="Yes" value="yes" color="blue" @change="selectDiabetic1()"></v-radio>
-                    <v-radio label="No" value="no" color="blue" @change="selectDiabetic2()"></v-radio>
+     <v-layout row wrap>
+       <v-flex xs12 md6>
+         <v-subheader>Do you have History of Eye Problem? 
+           <v-spacer></v-spacer>
+                    <v-radio-group row v-model="eyeProblem" @change="selectEye(eyeProblem)">
+                    <v-radio label="Yes" value="yes" color="blue" ></v-radio>
+                    <v-radio label="No" value="no" color="blue" ></v-radio>
                 </v-radio-group> 
                 </v-subheader>
-                    <div id="selectDiabetic" style="display:none">
-                    <v-text-field type="text" label="Enter duration" ></v-text-field>
-                    </div>
-                </v-flex>
-                <v-spacer></v-spacer>
-               <v-flex xs5>
-                    <v-subheader>Do you have Hypertension? &nbsp;
-                    <v-radio-group row>
-                    <v-radio label="Yes" value="yes" color="blue" @change="selectHp1()"></v-radio>
-                    <v-radio label="No" value="no" color="blue" @change="selectHp2()"></v-radio>
-                </v-radio-group> 
-                </v-subheader>
-                <div id="selectHp" style="display:none">
-                    <v-text-field type="text" label="Enter duration" ></v-text-field>
-                    </div>
-                </v-flex>
-            </v-layout>
-
-            <v-layout row>
-                <v-flex xs5>
-                <v-subheader>Do you have any Cardiac condition? &nbsp;
-                    <v-radio-group row>
-                    <v-radio label="Yes" value="yes" color="blue" @change="selectCardiac1()"></v-radio>
-                    <v-radio label="No" value="no" color="blue" @change="selectCardiac2()"></v-radio>
-                </v-radio-group> 
-                </v-subheader>
-                <div id="selectCardiac" style="display:none">
-                    <v-text-field type="text" label="Enter duration" ></v-text-field>
-                    </div>
-                </v-flex>
-                 <v-spacer></v-spacer>
-               <v-flex xs5>
-                    <v-subheader>Do you have Asthma? &nbsp;
-                    <v-radio-group row>
-                    <v-radio label="Yes" value="yes" color="blue" @change="selectAsthma1()"></v-radio>
-                    <v-radio label="No" value="no" color="blue" @change="selectAsthma2()"></v-radio>
-                </v-radio-group> 
-                </v-subheader>
-                <div id="selectAsthma" style="display:none">
-                    <v-text-field type="text" label="Enter duration" ></v-text-field>
-                    </div>
-                </v-flex>
-            </v-layout>
-
-            <v-layout row>
-                <v-flex xs6>
-                <v-subheader>Do you have History of Eye Problem? &nbsp;
-                    <v-radio-group row>
-                    <v-radio label="Yes" value="yes" color="blue" @change="selectEye1()"></v-radio>
-                    <v-radio label="No" value="no" color="blue" @change="selectEye2()"></v-radio>
-                </v-radio-group> 
-                </v-subheader>
-                <div id="selectEye" style="display:none">
-                    <v-text-field type="text" label="Explain" ></v-text-field>
-                    </div>
-                </v-flex>
-                <v-spacer></v-spacer>
-               <v-flex xs5>
-                    <v-subheader>Are you using any Eye drops? &nbsp;
-                    <v-radio-group row>
-                    <v-radio label="Yes" value="yes" color="blue" @change="selectDrop1()"></v-radio>
-                    <v-radio label="No" value="no" color="blue" @change="selectDrop2()"></v-radio>
-                </v-radio-group> 
-                </v-subheader>
-                <div id="selectDrop" style="display:none">
-                    <v-text-field type="text" label="Explain"></v-text-field>
-                    </div>
-                </v-flex>
-            </v-layout>
-
-            </div>
+                
        </v-flex>
-
        <v-flex>
-           <v-subheader>Do you want to pay the appointment fee online?&nbsp;&nbsp;&nbsp;
-               <v-radio-group row>
-                   <v-radio label="Yes" value="yes" color="blue"></v-radio>
-                   <v-radio label="No" value="no" color="blue"></v-radio>
-               </v-radio-group>
-           </v-subheader>
+         <div id="selectEye" style="display:none">
+                    <v-text-field type="text" v-model="eyeProblemDescription" label="Explain" ></v-text-field>
+          </div>
        </v-flex>
-<hr>
-        <v-layout>
-            <v-flex xs12 sm8 offset-sm2>
+       <v-spacer></v-spacer>
+        <v-flex xs12 md6>
+          <v-subheader>Are you using any Eye drops? 
+          <v-spacer></v-spacer>
+                    <v-radio-group row v-model="eyeDrops" @change="selectDrop(eyeDrops)">
+                    <v-radio label="Yes" value="yes" color="blue"></v-radio>
+                    <v-radio label="No" value="no" color="blue"></v-radio>
+                </v-radio-group> 
+                </v-subheader>
+                
+        </v-flex>
+                <v-flex>
+                  <div id="selectDrop" style="display:none">
+                    <v-text-field type="text" v-model="eyeDropsDescription" label="Explain"></v-text-field>
+                    </div>
+                </v-flex>
+  <v-spacer></v-spacer>
+     </v-layout>
+  <v-divider></v-divider>
+     <v-layout row wrap>
+       <v-flex xs12 sm8 offset-sm2>
         <div class="text-xs-center">
-          <v-btn round color="success">Submit</v-btn>
+          <v-btn round color="success" :disabled="!valid"  @click="submit1()">Submit</v-btn>
           <v-btn round color="error">Cancel</v-btn>
         </div>
       </v-flex>
+     </v-layout>
+    </v-form>
+    </v-card-text>
+  </v-card>
+  <v-dialog v-model="paymentdialog" max-width="400">
+        <v-card>
+          <v-card-title>
+           <h3> Please Select Your Payment Method </h3> 
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex>
+                <v-btn color="primary" @click="submit('COA')" dark>CASH ON ARRIVAL</v-btn>
+              </v-flex>
+              <v-spacer></v-spacer>
+              <v-flex>
+                 <v-btn color="primary" :href="paymentUrl" @click="submit('ONLINE')" dark>ONLINE PAYMENT</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-action></v-card-action>
+        </v-card>
+      </v-dialog>
+</v-container>
+
+
+  <!-- <v-flex xs12 sm12>
+      <br>
+      <v-card>
+      <v-card-text>
+  
+
+<hr>
+        <v-layout>
+            
 
         </v-layout>
 
       </v-card-text>
       </v-card>
-  </v-flex>
+      
+
+  </v-flex> -->
 </template>
 <script>
-
+import {APIService} from '../APIService.js';
+const API_URL = 'http://server.mahatinnovations.com:9091';
+const apiService = new APIService();
+import axios from 'axios';
   export default {
     name: 'DatePickers',
     
     data () {
       return {
         picker: null,
-        date: null,
+        date: new Date().toISOString().substr(0, 10),
+        mindate: new Date().toISOString().substr(0, 10),
+        dob: null,
         menu: false,
+        menu1: false,
         modal: false,
         dialog1: false,
+        paymentdialog:false,
+
+        paymentUrl:"",
+
+        valid:true,
+
+        fullName: "",
+        mobileNumber: "",
+        email:"",
+        CurrenteyeProblem:"",
+        gender:"",
+        branch:null,
+        doctor:null,
+        diabetic: "no",
+        diabeticDuration:"",
+        bp:"no",
+        bpDuration:"",
+        cardiac:"no",
+        cardiacDuration: "",
+        asthama:"no",
+        asthamaDuration:"",
+        eyeProblem:"no",
+        eyeProblemDescription:"",
+        eyeDrops:"no",
+        eyeDropsDescription:"",
+        
+
+
+        genders:[{
+          gender:"MALE"
+        },{
+          gender:"FEMALE"
+        },{
+          gender:"OTHERS"
+        }],
+
+        branchs:[],
+        doctors:[],
+
+        slots:[],
+        branchSlots:[],
+        availSlots:[],
+        slotid: "",
+        formRequest: null,
+        displayError: false
         
       }
     },
 
     methods: {
-      allowedDates: val => parseInt(val.split('-')[2], 10) % 2 === 0,
-      save (date) {
-        this.$refs.menu5.save(date)
+      
+       selectDiabetic(diabetic){
+        if(diabetic == "yes"){
+          document.getElementById('selectDiabetic').style.display='block';
+        }else{
+          document.getElementById('selectDiabetic').style.display='none';
+        }
       },
-        selectClinical1(){
-            document.getElementById('selectClinical').style.display='block';
-        },
-        selectClinical2(){
-            document.getElementById('selectClinical').style.display='none';
-        },
-      selectDiabetic1(){
-           document.getElementById('selectDiabetic').style.display='block';
-       } ,
-       selectDiabetic2(){
-           document.getElementById('selectDiabetic').style.display='none';
+       selectHp(bp){
+        if(bp == "yes"){
+          document.getElementById('selectHp').style.display='block';
+        }else{
+          document.getElementById('selectHp').style.display='none';
+        }
+      },
+      selectCardiac(cardiac){
+        if(cardiac == "yes"){
+          document.getElementById('selectCardiac').style.display='block';
+        }else{
+          document.getElementById('selectCardiac').style.display='none';
+        }
+      },
+       selectAsthma(asthama){
+        if(asthama == "yes"){
+          document.getElementById('selectAsthma').style.display='block';
+        }else{
+          document.getElementById('selectAsthma').style.display='none';
+        }
+      },
+       selectEye(eyeProblem){
+        if(eyeProblem == "yes"){
+          document.getElementById('selectEye').style.display='block';
+        }else{
+          document.getElementById('selectEye').style.display='none';
+        }
+      },
+       selectDrop(drop){
+        if(drop == "yes"){
+          document.getElementById('selectDrop').style.display='block';
+        }else{
+          document.getElementById('selectDrop').style.display='none';
+        }
+      },
+
+       getBranches(){
+         return apiService.getBranches().then(res =>{
+           this.branchs = res;
+           console.log(this.branchs);
+           
+         })
        },
-        selectHp1(){
-           document.getElementById('selectHp').style.display='block';
-       } ,
-       selectHp2(){
-           document.getElementById('selectHp').style.display='none';
+       //  get full slots here
+       getAvailableSlotsBranchWise(){
+         
+
+         return apiService.getAvailableSlotFromBranch(this.date).then(response =>{
+           console.log(response);
+           this.slots = response;
+           
+           if(response.length > 0){
+             this.displayError = false;
+           }else{
+             this.displayError = true;
+           }
+         })
        },
-       selectCardiac1(){
-           document.getElementById('selectCardiac').style.display='block';
-       } ,
-       selectCardiac2(){
-           document.getElementById('selectCardiac').style.display='none';
+
+       filterBranchWise(branch){
+         let Slots = this.slots;
+         var branchslots = Slots.filter(bslot => bslot.branch.id == branch);
+         this.branchSlots = branchslots;
+         console.log("Branch wise Slots ");
+         console.log(this.branchSlots);
+         this.getDoctor();
        },
-       selectAsthma1(){
-           document.getElementById('selectAsthma').style.display='block';
-       } ,
-       selectAsthma2(){
-           document.getElementById('selectAsthma').style.display='none';
+
+       filterDoctorSlots(doctor){
+         let branch = this.branchSlots;
+         var result = branch.filter(avslot => avslot.doctor.id === doctor);
+         this.availSlots = result;
+         
+         console.log("Doctor wise Slots ");
+         console.log(this.availSlots);
+        
+         this.slotid = null;
        },
-       selectEye1(){
-           document.getElementById('selectEye').style.display='block';
-       } ,
-       selectEye2(){
-           document.getElementById('selectEye').style.display='none';
-       },
-       selectDrop1(){
-           document.getElementById('selectDrop').style.display='block';
-       } ,
-       selectDrop2(){
-           document.getElementById('selectDrop').style.display='none';
-       },
+
+       getDoctor(){
+        let doctors =[];
+        for(let i=0; i< this.branchSlots.length; i++){
+          if(doctors == null || doctors.length == 0){
+            doctors.push(this.branchSlots[i].doctor);
+          }else{
+            let added =0;
+            for(let j =0; j< doctors.length; j++){
+              if(doctors[j].id == this.branchSlots[i].id){
+                added = 1;
+              }else{
+                added = 0;
+              }
+            }
+            if(added == 0){
+              doctors.push(this.branchSlots[i].doctor);
+            }
+          }
+        }
+        this.doctors = doctors;
+        console.log("The list of Doctors");
+        
+        console.log(this.doctors);        
+      },
+
+      getBool(value){
+        if(value == "yes"){
+          return true;
+        }else{
+          return false;
+        }
+      },
+
+
+    submit1(){
+      if(this.$refs.form.validate()){
+        this.paymentdialog = true;
+      }else{
+        this.paymentdialog = false;
+      }
+      
+    },
+
+      submit(payment){
+       let formRequest ={
+         "fullName":this.fullName,
+         "mobileNumber":this.mobileNumber,
+         "date":this.date,
+         "email":this.email,
+         "dob":this.dob,
+         "eyeProblem":this.CurrenteyeProblem,
+         "gender":this.gender,
+         "slot":this.slotid,
+         "diabetic": this.getBool(this.diabetic),
+         "diabeticDuration":this.diabeticDuration,
+         "bp": this.getBool(this.bp),
+         "bpDuration":this.bpDuration,
+         "cardiac":this.getBool(this.cardiac),
+         "cardiacDuration":this.cardiacDuration,
+         "asthma":this.getBool(this.asthama),
+         "asthmaDuration":this.asthamaDuration,
+         "eyeProblem":this.getBool(this.eyeProblem),
+         "eyeProblemDetails":this.eyeProblemDescription,
+         "eyeDrops":this.getBool(this.eyeDrops),
+         "dropDetails":this.eyeDropsDescription,
+         "payment_method":payment
+       } ;
+
+
+
+
+       let url ="http://server.mahatinnovations.com:9091/onlineAppointments/addOnlineAppointment";
+       const auth = {
+        headers: { Authorization: localStorage.getItem('token') },
+       };
+         console.log(formRequest);
+
+         
+           return axios.post(url, formRequest, auth).then(response=>{
+           console.log(response);
+           if(response.status == 200){
+             
+             if(formRequest.payment_method == "ONLINE"){
+               this.paymentUrl = response.data.paymentUrl;
+               console.log(this.paymentUrl);
+               
+               window.location.assign(response.data.paymentUrl);
+              //  this.$router.go(response.data.paymentUrl);
+             }else{
+               this.$router.push('/dashboard');
+             }
+             
+             
+
+
+           }else{
+             alert("Oops !!! something went wrong , Try again later");
+           }
+         },err=>{
+           alert("Oops !!! something went wrong , Try again later");
+         });
+         
+         
+         
+       
+        
+      },
+      getLoggedinuser(){
+        return apiService.getloggedinUser().then(response => {
+          this.fullName = response.firstName+" "+response.lastName;
+          this.mobileNumber = response.mobileNumber;
+          this.email = response.email;
+        })
+      }
 
     },
     watch: {
@@ -380,6 +618,12 @@
         val && this.$nextTick(() => (this.$refs.picker5.activePicker = 'YEAR'))
       }
     },
+
+    mounted(){
+        this.getBranches();
+        this.getAvailableSlotsBranchWise();
+        this.getLoggedinuser();
+    }
     
   }
 </script>
