@@ -6,7 +6,7 @@
     <v-flex md8 xs12>
       <v-card>
 		   			<v-card-title>
-				      <div class="title">Appointment Table</div>
+				      <div class="title">My Appointments</div>
 				      <v-spacer></v-spacer>
 				      <v-text-field
 				        v-model="search"

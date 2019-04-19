@@ -18,7 +18,7 @@
                    <v-flex xs10 offset-xs1>
                        <v-textarea
                       
-                      label="Writedown Here......"
+                      label="Please enter your query"
                        input="text"
                        v-model="query">
                       </v-textarea>

@@ -97,44 +97,34 @@
     <v-toolbar fixed app light class="white">
       
       <v-icon @click.stop="drawer = !drawer">menu</v-icon>
-      <v-toolbar-title>
+      <!-- <v-toolbar-title>
         AMS-BANGALORE NETHRALAYA
-      </v-toolbar-title>
+      </v-toolbar-title> -->
       <v-spacer></v-spacer>
       <!-- <v-btn flat class="hidden-sm-and-down">Link One</v-btn>
       <v-btn flat class="hidden-sm-and-down">Link Two</v-btn> -->
-      <v-badge overlap color="red">
+      <!-- <v-badge overlap color="red">
         <small slot="badge">3</small>
         <v-avatar color="transparent red--after" size="36">
           <v-icon light>notifications</v-icon>
         </v-avatar>
-      </v-badge>
-      <v-badge overlap color="red">
+      </v-badge> -->
+      <!-- <v-badge overlap color="red">
         <small slot="badge">5</small>
         <v-avatar color="transparent red--after" size="36">
           <v-icon light>email</v-icon>
         </v-avatar>
-      </v-badge>
+      </v-badge> -->
       <v-menu bottom left transition="slide-y-transition">
         <v-btn slot="activator" icon>
           <v-icon class="grey--text text--darken-1">account_circle</v-icon>
         </v-btn>
         <v-list>
-          <v-list-tile >
+          <v-list-tile>
             <v-list-tile-action>
-              <v-icon>person</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-title>Profile</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile to="/settings">
-            <v-list-tile-action>
-              <v-icon>settings</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-title>Settings</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile >
-            <v-list-tile-action>
+              <v-btn fab small @click="logout">
               <v-icon>lock_open</v-icon>
+              </v-btn>
             </v-list-tile-action>
             <v-list-tile-title>Logout</v-list-tile-title>
           </v-list-tile>
@@ -167,6 +157,13 @@
           ['Sub Heading', 'settings']
         ]
       }
+    },
+    methods:{
+      logout(){
+        localStorage.removeItem('token');
+        localStorage.setItem('loggedIn',0);
+        this.$router.push('/login');
+			}
     }
   }
 </script>
