@@ -51,7 +51,36 @@
             <v-list-tile-title>Query List</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile> 
-
+        
+        <v-list-group prepend-icon="event" no-action>
+          <v-list-tile slot="activator">
+            <v-list-tile-content>
+              <v-list-tile-title> OTHER APPOINTMENTS </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile to="/OpinionConsultationList">
+            
+            <v-list-tile-action>
+              <v-icon> list </v-icon>
+            </v-list-tile-action>
+            
+            <v-list-tile-content>
+              <v-list-tile-title> Opinion & Consultation </v-list-tile-title>
+            </v-list-tile-content>
+            
+          </v-list-tile>
+          <v-list-tile to="/OtherAppointments">
+            
+            <v-list-tile-action>
+              <v-icon> list </v-icon>
+            </v-list-tile-action>
+            
+            <v-list-tile-content>
+              <v-list-tile-title> Other Appointments </v-list-tile-title>
+            </v-list-tile-content>
+            
+          </v-list-tile>
+        </v-list-group>
        
 
 

@@ -3,24 +3,27 @@
 	<v-layout py-3>
 	   		<v-flex xs12>
 	   			<!-- <v-card> -->
-		   			<v-card-title>
-				     
-				      <v-spacer></v-spacer>
-               </v-card-title>
+		   			
                    <v-flex xs6 offset-xs3>
-                      <h1 class="cl">Do you have any Question?</h1>
-               <v-card solo class="val">
+                      <v-form
+                      ref="form"
+                      v-model="valid"
+                      lazy-validation>
+               <v-card>
+                 
                    <v-card-title>
-                   
+                   <h3>Do you have any Question?</h3>
                    </v-card-title>
+                   <v-divider></v-divider>
                    <v-card-text>
                     
                    <v-flex xs10 offset-xs1>
                        <v-textarea
-                      
+                      outline
                       label="Please enter your query"
                        input="text"
-                       v-model="query">
+                       v-model="query"
+                       :rules="[rules.required, rules.length]">
                       </v-textarea>
                     </v-flex>
                   </v-card-text>
@@ -30,9 +33,10 @@
                </v-card>
                <br/>
                 <v-flex xs6 offset-xs4>
-	             <v-btn color="green" dark round @click="addqueries()">Submit</v-btn>
+	             <v-btn color="green" :disabled="!valid" dark round @click="addqueries()">Submit</v-btn>
                    <v-btn color="error" dark round>Cancel</v-btn>
                    </v-flex>	
+                      </v-form>
               </v-flex>	
               
 			 	</v-flex>	
@@ -44,7 +48,8 @@
 <script>
 import axios from 'axios';
 
-const API_URL='http://server.mahatinnovations.com:9091';
+// const API_URL='http://server.mahatinnovations.com:9091';
+const API_URL='http://localhost:9091';
 
 
   export default {
@@ -54,13 +59,19 @@ const API_URL='http://server.mahatinnovations.com:9091';
 			  e6: 1,
         search: '',
         selected: [],
-      query:''
+      query:'',
+      valid: true,
+      rules:{
+        required: v => !!v || 'Please Enter Your Query',
+        length : v=> v.length > 10 || 'Query Should be greater than 10 Chars'
+      }
 		
       }
     },
    methods:{
     addqueries(){
-      const auth={
+      if(this.$refs.form.validate()){
+        const auth={
         headers:{
           Authorization:localStorage.getItem('token')
         }
@@ -75,16 +86,36 @@ const API_URL='http://server.mahatinnovations.com:9091';
       },err=>{
         alert("Oops!!, Something went Wrong");
       })
+      }else{
+        this.valid = false;
+      }
+      
     }
   },
    
+    
     created: function(){
-      this.$root.breadcrumbs = []
+      this.$root.breadcrumbs = [
+        {
+          text: 'Dashboard',
+          disabled: false,
+          href: '/dashboard'
+        },
+        {
+          text: 'Query List',
+          disabled: false,
+          href: '/UserQueryList'
+        },
+        {
+          text: 'Ask Query',
+          disabled: true,
+        }
+      ]
     }
   } 
 </script>
 <style>
-.v-carousel{
+/* .v-carousel{
 	height: 160px;
 }
 .v-window__container{
@@ -100,7 +131,7 @@ background: aliceblue;
      margin:10px;
 }
 div.flex.xs6.offset-xs3 > div > div{
-    /* background-color:blue; */
+    
     padding:3px;
     color:white;
    
@@ -114,7 +145,7 @@ div.flex.xs6.offset-xs3 > div > div{
    
 }
 #app > div.application--wrap > div > main > div > div > div > div > div > div > div.flex.xs6.offset-xs3 > div > v-card-body > div > div > div > div.v-input__slot{
- /* border:2px solid blanchedalmond; */
+ 
 border-bottom:3px solid darkblue;
 background-color:aliceblue;
 
@@ -130,6 +161,6 @@ background-color:aliceblue;
 .v-card.val{
   border:7px solid #29abe2;
   background:aliceblue;
-}
+} */
 </style>
 

@@ -1,60 +1,49 @@
 <template>
-
-
 <v-container fluid>
   <v-layout row wrap>
     <v-flex md8 xs12>
-      <v-card>
-		   			<v-card-title>
-				      <div class="title">My Appointments</div>
-				      <v-spacer></v-spacer>
-				      <v-text-field
-				        v-model="search"
-				        append-icon="search"
-				        label="Search"
-				        single-line
-				        hide-details
-				      ></v-text-field>
-				    </v-card-title>
-		   			<v-data-table
-					    :headers="headers"
-					    :items="appointmentlist"
-					    :search="search"
-					    v-model="selected"
-					    item-key="name"
-					    
-					  >
-					    <template slot="headerCell" slot-scope="props">
-					      <v-tooltip bottom>
-					        <span slot="activator">
-					          {{ props.header.text }}
-					        </span>
-					        <span>
-					          {{ props.header.text }}
-					        </span> 
-					      </v-tooltip>
-					    </template>
-					    <template slot="items" slot-scope="props">
-					      <td>
-					        {{props.index+1}}
-					      </td>
-                <td>{{props.item.patientName}}</td>
-               <td>  {{props.item.date}}</td>
-            <td>{{props.item.slot.slot.slotName}}</td>
-					  		<td>
-                {{props.item.appointmentStatus}}
-									
-	         </td>
-								<td class="justify-center layout px-0">
-                    <v-btn slot="activator" @click="reschedule(props.item.id)" fab small color="blue" dark><v-icon color="white">event</v-icon></v-btn>
-	         </td>
+      
 
-								<td><v-btn icon class="mx-0" @click="deleteItem(props.item.id)"  fab small color="red" dark>
-                <v-icon color="white">delete</v-icon>
-              </v-btn></td>							
-					    </template>
-					  </v-data-table>
-				</v-card>	  
+       <v-card>
+         <v-card-title>
+           <h3>MY APPOINTMENTS</h3>
+         </v-card-title>
+         <v-divider></v-divider>
+         <v-card-text>
+           <v-container  grid-list-xl>
+              <v-layout row wrap>
+            <v-flex md6 v-for="(app ,i) of appointmentlist" :key="i">
+              <v-card class="card-border">
+              <v-card-title primary-title>
+                
+                  <div>
+                    <p>
+                      Patient Name : <u> {{ app.patientName }} </u> <br>
+                      Date : {{ app.date }} <br>
+                      Time Slot : {{ app.slot.slot.slotName }}<br>
+                      Branch : {{ app.slot.branch.branchName }}<br>
+                      Doctor : {{ app.slot.doctor.username }}<br>
+                      {{app.id}}
+                    </p>
+                    
+                    <div>
+                      <v-btn slot="activator" @click="reschedule(app.id)" round small color="blue" dark>RESCHDULE</v-btn>
+<v-btn class="mx-0" slot="activator" @click="deleteItem(app.id)" round small color="red" dark>
+                <v-icon color="white">delete</v-icon> DELETE
+               </v-btn>
+                    </div>
+                  </div>
+              </v-card-title>
+            </v-card>
+            </v-flex>
+            
+            </v-layout>
+            </v-container>
+         </v-card-text>
+       </v-card>
+
+		   			
+			  
     </v-flex>
     <v-flex md3 offset-md1 xs12>
        <div class="title">Services</div>
@@ -65,25 +54,39 @@
   <br>
   <v-divider></v-divider>
   <br>
-  <v-layout row wrap>
-      
-  <div class="title">Doctors Available</div>
-  </v-layout>
-<br>
-  <v-layout row wrap>
+
+  <v-card>
+    <v-card-title>
+      <h3>Doctors Available</h3>
+    </v-card-title>
+    <v-divider></v-divider>
+    <v-card-text>
+      <v-layout row wrap>
   
     <v-flex xs10 offset-xs2 md4 offset-md0 v-for="doctor of doctorList" :key="doctor.id">
 				    
                <v-card class="design">
-              Dr. {{doctor.doctor.username}}<br/>
+              {{doctor.doctor.username}}<br/>
 							{{doctor.service.services}}
               </v-card>
       </v-flex>
   </v-layout>
+    </v-card-text>
+  </v-card>
+  
+<br>
+  
   <br>
   <v-divider></v-divider>
   <br>
-  <v-layout row wrap>
+
+  <v-card>
+    <v-card-title>
+      <h3>OUR FACILITIES</h3>
+    </v-card-title>
+    <v-divider></v-divider>
+    <v-card-text>
+      <v-layout row wrap>
 						 <v-flex md3 xs6>
 					 <v-carousel hide-delimiters class="tpa-slide">
     <v-carousel-item
@@ -124,143 +127,55 @@
   </v-carousel>
 						 </v-flex>
 						 </v-layout>
+    </v-card-text>
+  </v-card>
+<br>
+<v-divider></v-divider>
+  <br>
 
       <v-layout row wrap>
-        						 <v-flex md3 xs6>
-					 <v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa5"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex>
-						 <v-flex md3 xs6>
-	<v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa6"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex>
-						 <v-flex md3 xs6>
-	<v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa7"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex>
-						 <v-flex md3 xs6>
-	<v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa8"
-      :key="i"
-      :src="item.src"
-		style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex>
+        					
+						
+      <v-flex xs12 sm12>
+        <v-card>
+          <v-card-title>
+            <h3>Turn Arround Time For Imaging Reports</h3>
+            
+          </v-card-title>
+          <v-divider></v-divider>
+          
+          <v-card-text>
+            <v-data-table
+            :headers="headers1"
+            :items="desserts"
+            :search="search"
+            hide-actions
+          >
+            <template slot="items" slot-scope="props">
+               <td class="text-xs-left">{{ props.item.iron }}</td>
+              <td>{{ props.item.name }}</td>
+              <td class="text-xs-left">{{ props.item.calories }}</td>
+              <td class="text-xs-left">{{ props.item.fat }}</td>
+          
+             
+            </template>
+            <v-alert slot="no-results" :value="true" color="error" icon="warning">
+              Your search for "{{ search }}" found no results.
+            </v-alert>
+          </v-data-table>
+          </v-card-text>
+          
+        </v-card>
+      </v-flex>
       </v-layout>
 </v-container>
 
-
-  <!-- <v-container>
-	      	 
-					 <v-layout row wrap>
-						 <v-flex xs2>
-					 <v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px">
-    <v-carousel-item
-      v-for="(item,i) in tpa1"
-      :key="i"
-      :src="item.src" style="height:140px;padding:10px;"
-	    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex ><v-flex xs1></v-flex>
-						 <v-flex xs2>
-	<v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px;">
-    <v-carousel-item
-      v-for="(item,i) in tpa2"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex><v-flex xs1></v-flex>
-						 <v-flex xs2>
-	<v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px">
-    <v-carousel-item
-      v-for="(item,i) in tpa3"
-      :key="i"
-      :src="item.src"
-		style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex><v-flex xs1></v-flex>
-						 <v-flex xs2>
-	<v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px">
-    <v-carousel-item
-      v-for="(item,i) in tpa4"
-      :key="i"
-      :src="item.src"
-		style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex><v-flex xs1></v-flex>
-						 </v-layout>		 
-<v-layout row wrap>
-						 <v-container xs2>
-					 <v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px">
-    <v-carousel-item
-      v-for="(item,i) in tpa5"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-container ><v-flex xs1></v-flex>
-						 <v-flex xs2>
-	<v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px">
-    <v-carousel-item
-      v-for="(item,i) in tpa6"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex><v-flex xs1></v-flex>
-						 <v-flex xs2>
-	<v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px">
-    <v-carousel-item
-      v-for="(item,i) in tpa7"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex><v-flex xs1></v-flex>
-						 <v-flex xs2>
-	<v-carousel hide-delimiters style="height:160px;margin-left:18px;margin-bottom:20px">
-    <v-carousel-item
-      v-for="(item,i) in tpa8"
-      :key="i"
-      :src="item.src"
-		style="height:140px;padding:10px;"
-    ></v-carousel-item>
-  </v-carousel>
-						 </v-flex><v-flex xs1></v-flex>
-						 </v-layout>		 
-				 </v-container> -->
 </template>
 
 <script>
 import axios from 'axios';
-const API_URL = 'http://server.mahatinnovations.com:9091';
+ const API_URL = 'http://server.mahatinnovations.com:9091';
+// const API_URL = 'http://localhost:9091'
 import {APIService} from '../APIService.js';
 const apiService = new APIService();
 
@@ -269,137 +184,132 @@ const apiService = new APIService();
     name: 'Dashboard',
     data () {
       return {
+        headers1: [
+        
+          { text: 'Sl No', value: 'slno' },
+          { text: 'Test Name', value: 'testname' },
+          { text: 'Turn-arround Time', value: 'turnarroundtime' },
+         
+        ],
+        desserts: [
+         
+          {
+            value: false,
+               iron: '1',
+            name: 'Refraction',
+            calories: '30 minutes',
+           
+         
+          },
+          {
+            value: false,
+               iron: '2',
+            name: 'Pediatric Refraction & Squint Assesment',
+            calories: '45 minutes',
+          },
+          {
+            value: false,
+               iron: '3',
+            name: 'A Scan',
+            calories: '15 minutes',
+          },
+          {
+            value: false,
+               iron: '4',
+            name: 'Keratometry',
+            calories: '5 minutes',
+          },
+          {
+            value: false,
+               iron: '5',
+            name: 'Autoperimetry(BE)',
+            calories: '1 hour',
+          },
+          {
+            value: false,
+               iron: '6',
+            name: 'OCT(BE)',
+            calories: '20 minutes',
+          },
+          {
+           value: false,
+               iron: '7',
+            name: 'Topography',
+            calories: '15 minutes',
+          },
+          {
+           value: false,
+               iron: '8',
+            name: 'Pachymetry',
+            calories: '10 minutes',
+          },
+          {
+            value: false,
+               iron: '9',
+            name: 'Fundus Photography',
+            calories: '10 minutes',
+          }
+        ],
+
 				tpa1: [
           {
-            src:"../public/images-tpa/1.jpg"
+            src:"../public/images-tpa/abreyometer.jpg"
           },
+         
           {
-           src:"../public/images-tpa/2.jpg"
+           src:"../public/images-tpa/catarex31.png"
           },
-          {
-           src:"../public/images-tpa/3.jpg"
-          },
-          {
-           src:"../public/images-tpa/4.jpg"
+          	{
+						src:"../public/images-tpa/pdt.jpg"
 					},
 				],
 				tpa2: [
           {
-            src:"../public/images-tpa/7.jpg"
+            src:"../public/images-tpa/cirrus-oct.png"
           },
+          
           {
-           src:"../public/images-tpa/8.jpg"
+           src:"../public/images-tpa/lasikmachine2.jpg"
           },
+        	
           {
-           src:"../public/images-tpa/9.jpg"
+           src:"../public/images-tpa/echorule2.jpg"
           },
-          {
-           src:"../public/images-tpa/10.jpg"
-					},			
+         		
 				],
 				tpa3: [
-					{
-						src:"../public/images-tpa/13.jpg"
+
+				
+          {
+						src:"../public/images-tpa/TMS_4N.png"
+          },
+          	{
+						src:"../public/images-tpa/humphrey.JPG"
 					},
-          {
-            src:"../public/images-tpa/14.jpg"
+					{
+           src:"../public/images-tpa/yag-laser.png"
           },
-          {
-           src:"../public/images-tpa/15.jpg"
-          },
-          {
-           src:"../public/images-tpa/16.jpg"
-          },
+           
 					
 				],
 				tpa4: [
-					{
-						src:"../public/images-tpa/19.jpg"
-					},
-          {
-            src:"../public/images-tpa/20.jpg"
+				 {
+           src:"../public/images-tpa/pachymetry.jpeg"
           },
           {
-           src:"../public/images-tpa/21.jpg"
+            src:"../public/images-tpa/soveriegn.jpg"
           },
-          {
-           src:"../public/images-tpa/22.jpg"
+         {
+           src:"../public/images-tpa/catarex31.png"
           },
           
-				],
-				tpa5: [
-					{
-						src:"../public/images-tpa/25.jpg"
-					},
-					{
-						src:"../public/images-tpa/26.jpg"
-					},
-          {
-            src:"../public/images-tpa/27.jpg"
-          },
-          {
-           src:"../public/images-tpa/28.jpg"
-          },          
-				],
-				tpa6: [
-					{
-						src:"../public/images-tpa/5.jpg"
-					},{
-						src:"../public/images-tpa/6.jpg"
-					},
-					{
-           src:"../public/images-tpa/29.jpg"
-          },
-          {
-           src:"../public/images-tpa/30.jpg"
-					},
-				],
-				tpa7: [
-					{
-           src:"../public/images-tpa/23.jpg"
-					},
-					{
-						src:"../public/images-tpa/24.jpg"
-					},
-					{
-						src:"../public/images-tpa/17.jpg"
-					},
-					{
-						src:"../public/images-tpa/18.jpg"
-					},
-				],
-				tpa8: [
-					{
-						src:"../public/images-tpa/11.jpg"
-					},
-					{
-						src:"../public/images-tpa/12.jpg"
-					},
-					{
-           src:"../public/images-tpa/4.jpg"
-					},
-					{
-           src:"../public/images-tpa/10.jpg"
-					},
-				],
-        e6: 1,
+     	],
+		
+			
+			  e6: 1,
         search: '',
         selected: [],
-        headers: [
-				 { text: 'Sl.No', value: 'Sl.No', align: 'left', },
-				 {
-            text: 'Name',
-            align: 'left',
-            sortable: false,
-            value: 'name'
-          },
-          { text: 'Date', value: 'Date' ,align: 'left',},
-          { text: 'Time', value: 'Time',align: 'left', },
-          { text: 'Status', value: 'status',align: 'left', },
-          { text: 'Reshedule', value: 'Edit',align: 'left', },          
-          { text: 'Delete', value: 'Delete',align: 'left', }
-				],
-				
+        
         appointmentlist:[],
         doctorList:[],
         serviceList:[],
@@ -409,15 +319,12 @@ const apiService = new APIService();
     methods:{
       getappointmentList(){
 				return apiService.getMyAppointments().then(response => {
-					this.appointmentlist = response;
-          this.sortAppointment();
+          this.appointmentlist = response.reverse();
+          console.log(this.appointmentlist);
+          
 				});
       },
-      sortAppointment(){
-        this.appointmentlist.sort(function(a,b){
-          return b.id -a.id;
-        })
-      },
+      
       getdoctorList(){
 				
 				return apiService.getDoctorsListDashboard().then(response => {
@@ -448,17 +355,21 @@ const apiService = new APIService();
   }
 </script>
 <style>
-/* .v-carousel{
-	height: 160px;
+#app > div.application--wrap > div > main > div > div > div > div > div:nth-child(1) > div.flex.md8.xs12 > div:nth-child(2) > div.v-table__overflow > table > tbody > div > div{
+  border: 7px solid aliceblue;
+  
 }
-.v-window__container{
-	height: 160px;
-} */
+#app > div.application--wrap > div > main > div > div > div > div > div:nth-child(1) > div.flex.md8.xs12 > div:nth-child(2) > div.v-table__overflow > table > thead{
+  display: none;
+}
+#app > div.application--wrap > div > main > div > div > div > div > div:nth-child(1) > div.flex.md8.xs12 > div:nth-child(2) > div.v-datatable.v-table.theme--light > div{
+  display: none;
+}
 div.designforser.v-card.v-sheet.theme--light{         
    height:56px;
    width:93%;
     position: relative;
-    background: red;
+    background:darkblue;
     margin-top: 10px;
     padding-top: 18px;
     color:white;
@@ -488,7 +399,7 @@ div.designforser.v-card.v-sheet.theme--light:after{
       bottom: 0;
       width: 0;
       height: 0;
-      border-left: 20px solid red;
+      border-left: 20px solid darkblue;
       border-top: 26px solid transparent;
       border-bottom: 30px solid transparent;
     }
@@ -501,7 +412,7 @@ div.designforser.v-card.v-sheet.theme--light:after{
       border:4px solid darkblue;
       background-image:url('https://randomuser.me/api/portraits/men/85.jpg');
       background-size:100px;
-      /* border:4px solid white; */
+       /* border:4px solid white;  */
     }
     div.design.v-card.v-sheet.theme--light{         
    /* height: 60px;
@@ -519,9 +430,12 @@ div.designforser.v-card.v-sheet.theme--light:after{
     padding-top: 10px;
     color:white;
     text-align: center;
-    /* font-size:13px; */
+     /* font-size:13px;  */
    
     
+}
+#app > div.application--wrap > div > main > div > div > div > div > div:nth-child(1) > div.flex.md8.xs12 > div:nth-child(2) > div.v-table__overflow > table{
+  background:none;
 }
    div.design.v-card.v-sheet.theme--light:after{
      content: "";
@@ -531,8 +445,8 @@ div.designforser.v-card.v-sheet.theme--light:after{
     width: 0;
     height: 0;
     border-left: 13px solid blue;
-    border-top: 38px solid transparent;
-    border-bottom: 31px solid transparent;
+    border-top: 34px solid transparent;
+    border-bottom: 35px solid transparent;
   
     }
     table > tbody > tr:nth-child(n){
@@ -557,8 +471,8 @@ div.designforser.v-card.v-sheet.theme--light:after{
   width: 80%;
   text-align: center;
 }
+.card-border{
+  border: 3px solid darkblue !important;
+}
 
 </style>
-
-
-

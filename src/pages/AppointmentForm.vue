@@ -41,57 +41,60 @@
           </v-date-picker>
         </v-menu>
       </v-flex> 
+      <v-spacer></v-spacer>
+       <v-flex xs12 md6>
+          <v-subheader>Appointment for
+          
+                    <v-radio-group row v-model="appFor" @change="getLoggedinuser()">
+                    <v-radio label="Self" value="self" color="blue"></v-radio>
+                    <v-radio label="Other" value="other" color="blue"></v-radio>
+                </v-radio-group> 
+                </v-subheader>
+                
+        </v-flex>
       </v-layout>
       <v-layout row wrap>
             <v-flex xs12 md3>
-              <v-text-field type="text" label="Full Name"
+              <v-select
+                      :items="titles"
+                      label="Select Title"
+                      item-text="title"
+                      v-model="title"
+                      item-value="title"
+                      :rules="[v => !!v || 'Please Select Your title']"
+                      single-line
+                    ></v-select>
+            </v-flex>
+            <v-flex xs12 md3 offset-md1>
+              <v-text-field class="uppercase" type="text" label="Full Name"
               :rules="[v => !!v || 'Please Enter Full Name']"
                v-model="fullName"></v-text-field>
             </v-flex> 
             <v-flex xs12 md3 offset-md1>
                <v-text-field label="Mobile Number"
-               :rules="[v => !!v || 'Please Enter Mobile Number']"
-                type="number" v-model="mobileNumber"></v-text-field>
+               :rules="[mobileNoRules.required, mobileNoRules.counter]"
+                type="number" counter="10" maxlength="10" v-model="mobileNumber"></v-text-field>
             </v-flex>
-            <v-flex xs12 md3 offset-md1>
-             <v-text-field type="text" label="Email" v-model="email"></v-text-field>
-            </v-flex>
+            
      </v-layout>
 
      <v-layout row wrap>
             <v-flex xs12 md3>
-            <v-menu
-            ref="dob"
-          :close-on-content-click="false"
-          v-model="menu1"
-          :nudge-right="40"
-          :return-value.sync="date"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          min-width="290px"
-          class="fields"
-            >
-              <v-text-field
-            slot="activator"
-            v-model="dob"
-            label="Select Date Of Birth"
-            prepend-icon="event"
-            :rules="[v => !!v || 'Please Select Your Date of Birth']"
-            readonly
-          ></v-text-field>
-          <v-date-picker v-model="dob"  no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="$refs.dob.save(date)">OK</v-btn>
-          </v-date-picker>
-            </v-menu>
+             <v-text-field type="text" label="Email" v-model="email"></v-text-field>
+            </v-flex>
+            <v-flex xs12 md3 offset-md1>
+              <v-text-field label="Age (In years)"
+               :rules="[v => !!v || 'Please Enter Your Age']"
+                type="number" :max="100" v-model="age"></v-text-field>
             </v-flex> 
             <v-flex xs12 md3 offset-md1>
                <v-text-field type="text" label="Current Eye Problem" ></v-text-field>
             </v-flex>
-            <v-flex xs12 md3 offset-md1>
+            
+     </v-layout>
+
+     <v-layout row wrap>
+            <v-flex xs12 md3>
               <v-select
                       :items="genders"
                       label="Select Gender"
@@ -102,10 +105,14 @@
                       single-line
                     ></v-select>
             </v-flex>
-     </v-layout>
 
-     <v-layout row wrap>
-           <v-flex xs12 md3>
+            <v-flex xs12 md3 offset-md1>
+              <v-text-field label="Reffered By " v-model="refferedBy">
+
+              </v-text-field>
+            </v-flex>
+            
+           <v-flex xs12 md3 offset-md1>
               <v-select
                       :items="branchs"
                       label="Select Branch"
@@ -118,7 +125,40 @@
                       @change="filterBranchWise(branch)"
                     ></v-select>
             </v-flex> 
-            <v-flex xs12 md3 offset-md1>
+            
+     </v-layout>
+
+     <v-layout row wrap>
+       <v-flex md3>
+         <v-text-field v-model="addressLine1" label="Address Line 1">
+
+         </v-text-field>
+       </v-flex>
+       <v-flex md3 offset-md1>
+         <v-text-field v-model="addressLine2" label="Address Line 1">
+
+         </v-text-field>
+       </v-flex>
+       <v-flex md3 offset-md1>
+         <v-text-field v-model="pincode" label="Address Line 1">
+
+         </v-text-field>
+       </v-flex>
+     </v-layout>
+
+     <v-layout row wrap>
+       <v-flex xs12 md6>
+              <v-subheader>
+                Do you Prefer Any Doctor ?
+                <v-spacer></v-spacer>
+                <v-radio-group row v-model="prefarance" @change="priorityCheck()" :rules="[v => !!v || 'Please Select Any Prefarance']">
+                  <v-radio color="primary" label="YES" value="YES"></v-radio>
+                  <v-radio color="primary" label="NO" value="NO"></v-radio>
+                </v-radio-group>
+              </v-subheader>
+            </v-flex>
+            
+       <v-flex xs12 md3 offset-md2 v-if="prefarance == 'YES'">
               <v-select
                       :items="doctors"
                       label="Available Doctors"
@@ -132,10 +172,10 @@
             </v-flex>
      </v-layout>
 
-        <v-layout row wrap>
-             <v-flex>
-          <v-card>
-        <v-card-title>
+     <v-layout row wrap>
+       <v-flex md12 sm12>
+         <v-card>
+         <v-card-title>
             <span class="headline">Available Slots</span>
           </v-card-title>
           <v-card-text v-if="displayError">
@@ -150,33 +190,60 @@
               </v-layout>
           </v-card-text>
 
+          <v-card-text v-else>
+             <v-radio-group  v-model="slotid" :rules="[v => !!v || 'Please Select Appointment Slot']">
+               <v-layout row wrap>
+                
+                   <v-card  v-for="(ava,i) in availSlots" :key="i" style="padding-left:15px;padding-bottom:15px;margin-left:15px;">
+                     <v-flex sm12 md12 >  
+                       <v-card-text>
+                         <b> <u>{{ ava.doctor.username }}</u> </b>
+                            <v-divider></v-divider>
+                            <br>
+                           <v-radio color="green" :value="ava.id" :label="ava.slot.slotName"></v-radio>
+                           
+                         
+                       </v-card-text>
+                     </v-flex>
+                     <v-spacer></v-spacer>
+                   </v-card>
+                   
+               </v-layout>
+             </v-radio-group>
+          </v-card-text>
+       </v-card>
+       </v-flex>
+     </v-layout>
 
-                 <v-radio-group v-else v-model="slotid" :rules="[v => !!v || 'Please Select Appointment Slot']">
+        
+          <!-- <v-card>
+        
+          
+
+
+                 <v-radio-group  v-model="slotid" :rules="[v => !!v || 'Please Select Appointment Slot']">
                <v-card-text>
                    <v-layout row wrap>
                       
-                       
+                     <v-flex sm12 md4 style="padding-left:15px;padding-bottom:15px;">  
                    <v-card  v-for="(ava,i) in availSlots" :key="i">
-                     <v-flex sm12 style="padding-left:15px;padding-bottom:15px;">
+                     
                        <v-card-text>
+                         
+                            <u>{{ ava.slot.startTime}} - {{ ava.slot.endTime}} </u>
                            <v-radio color="green" :value="ava.id" :label="ava.slot.slotName"></v-radio>
-                           <b> {{ ava.slot.startTime}} - {{ ava.slot.endTime}} </b>
+                           <b> <u>{{ ava.doctor.username }}</u> </b>
+                         
                        </v-card-text>
-                       </v-flex>
-                   </v-card>
                        
-                                                                                                                                                                                      
+                   </v-card>
+                   </v-flex>                                                                                                                               
                    </v-layout>
                 </v-card-text> 
                  </v-radio-group>
                   
-            </v-card>
+            </v-card> -->
       
-        </v-flex>
-        
-           
-
-        </v-layout>
 
     <v-divider></v-divider>
 
@@ -229,11 +296,11 @@
       </v-subheader>          
     </v-flex>
 
-    <v-flex>
+    <!-- <v-flex>
       <div id="selectCardiac" style="display:none">
                     <v-text-field type="text" v-model="cardiacDuration" label="Enter duration" ></v-text-field>
       </div>
-    </v-flex>
+    </v-flex> -->
     <v-spacer></v-spacer>
     <v-flex xs12 md6>
       <v-subheader>Do you have Asthma? 
@@ -245,11 +312,11 @@
       </v-subheader>
                 
     </v-flex>
-    <v-flex>
+    <!-- <v-flex>
       <div id="selectAsthma" style="display:none">
                     <v-text-field type="text" v-model="asthamaDuration" label="Enter duration" ></v-text-field>
       </div>
-    </v-flex>
+    </v-flex> -->
     <v-spacer></v-spacer>
   </v-layout>
      
@@ -288,6 +355,44 @@
                 </v-flex>
   <v-spacer></v-spacer>
      </v-layout>
+
+  <v-layout row wrap>
+       <v-flex xs12 md6>
+         <v-subheader>Do you have any Drug Allergy? 
+           <v-spacer></v-spacer>
+                    <v-radio-group row v-model="drugAllergy" @change="selectDrug(drugAllergy)">
+                    <v-radio label="Yes" value="yes" color="blue" ></v-radio>
+                    <v-radio label="No" value="no" color="blue" ></v-radio>
+                </v-radio-group> 
+                </v-subheader>
+                
+       </v-flex>
+       <v-flex>
+         <div id="selectDrug" style="display:none">
+                    <v-text-field type="text" v-model="drugAllergyDescription" label="Explain" ></v-text-field>
+          </div>
+       </v-flex>
+       <v-spacer></v-spacer>
+        <v-flex xs12 md6>
+          <v-subheader>Do have any Medical Conditions? 
+          <v-spacer></v-spacer>
+                    <v-radio-group row v-model="medCond" @change="selectMed(medCond)">
+                    <v-radio label="Yes" value="yes" color="blue"></v-radio>
+                    <v-radio label="No" value="no" color="blue"></v-radio>
+                </v-radio-group> 
+                </v-subheader>
+                
+        </v-flex>
+                <v-flex>
+                  <div id="selectMed" style="display:none">
+                    <v-text-field type="text" v-model="medicalCondition" label="Explain"></v-text-field>
+                    </div>
+                </v-flex>
+  <v-spacer></v-spacer>
+     </v-layout>
+
+
+
   <v-divider></v-divider>
      <v-layout row wrap>
        <v-flex xs12 sm8 offset-sm2>
@@ -385,6 +490,16 @@ import axios from 'axios';
         eyeProblemDescription:"",
         eyeDrops:"no",
         eyeDropsDescription:"",
+        refferedBy:"NONE",
+        drugAllergy:"no",
+        drugAllergyDescription:"",
+        medCond:"no",
+        medicalCondition:"",
+
+        addressLine1:"",
+        addressLine2: "",
+        pincode:"",
+
         
 
 
@@ -396,6 +511,19 @@ import axios from 'axios';
           gender:"OTHERS"
         }],
 
+        titles:[{
+          title:"Mr."
+        },
+        {
+          title:"Mrs."
+        },
+        {
+          title:"Miss."
+        },
+        {
+          title:"Dr."
+        }],
+
         branchs:[],
         doctors:[],
 
@@ -404,7 +532,16 @@ import axios from 'axios';
         availSlots:[],
         slotid: "",
         formRequest: null,
-        displayError: false
+        displayError: false,
+        appFor:"self",
+        title:"",
+        age:null,
+        mobileNoRules:{
+          required: value=> !!value || "Required",
+          counter: value=> value.length <= 10 || "Max 10 digits"
+        },
+        prefarance:"YES"
+        
         
       }
     },
@@ -425,18 +562,18 @@ import axios from 'axios';
           document.getElementById('selectHp').style.display='none';
         }
       },
-      selectCardiac(cardiac){
-        if(cardiac == "yes"){
-          document.getElementById('selectCardiac').style.display='block';
+      selectDrug(drugAllergy){
+        if(drugAllergy == "yes"){
+          document.getElementById('selectDrug').style.display='block';
         }else{
-          document.getElementById('selectCardiac').style.display='none';
+          document.getElementById('selectDrug').style.display='none';
         }
       },
-       selectAsthma(asthama){
-        if(asthama == "yes"){
-          document.getElementById('selectAsthma').style.display='block';
+       selectMed(medCond){
+        if(medCond == "yes"){
+          document.getElementById('selectMed').style.display='block';
         }else{
-          document.getElementById('selectAsthma').style.display='none';
+          document.getElementById('selectMed').style.display='none';
         }
       },
        selectEye(eyeProblem){
@@ -540,13 +677,21 @@ import axios from 'axios';
       
     },
 
+    priorityCheck(){
+      if(this.prefarance == "YES"){
+        this.filterDoctorSlots(this.doctor);
+      }else{
+        this.availSlots = this.branchSlots;
+      }
+    },
+
       submit(payment){
        let formRequest ={
-         "fullName":this.fullName,
+         "fullName": this.title+" "+this.fullName,
          "mobileNumber":this.mobileNumber,
          "date":this.date,
          "email":this.email,
-         "dob":this.dob,
+         "age":this.age,
          "eyeProblem":this.CurrenteyeProblem,
          "gender":this.gender,
          "slot":this.slotid,
@@ -555,20 +700,27 @@ import axios from 'axios';
          "bp": this.getBool(this.bp),
          "bpDuration":this.bpDuration,
          "cardiac":this.getBool(this.cardiac),
-         "cardiacDuration":this.cardiacDuration,
          "asthma":this.getBool(this.asthama),
-         "asthmaDuration":this.asthamaDuration,
          "eyeProblem":this.getBool(this.eyeProblem),
          "eyeProblemDetails":this.eyeProblemDescription,
          "eyeDrops":this.getBool(this.eyeDrops),
          "dropDetails":this.eyeDropsDescription,
-         "payment_method":payment
+         "drugAllergy":this.getBool(this.drugAllergy),
+         "drugAllergyDuration":this.drugAllergyDescription,
+         "otherMedicalCondition":this.getBool(this.medCond),
+         "otherMedicalConditionDuration":this.medicalCondition,
+         "refferedBy":this.refferedBy,        
+         "payment_method":payment,
+         "addressLine1":this.addressLine1,
+         "addressLine2": this.addressLine2,
+         "pincode":this.pincode
        } ;
 
 
 
 
-       let url ="http://server.mahatinnovations.com:9091/onlineAppointments/addOnlineAppointment";
+      //  let url ="http://server.mahatinnovations.com:9091/onlineAppointments/addOnlineAppointment";
+       let url ="http://localhost:9091/onlineAppointments/addOnlineAppointment";
        const auth = {
         headers: { Authorization: localStorage.getItem('token') },
        };
@@ -605,11 +757,28 @@ import axios from 'axios';
         
       },
       getLoggedinuser(){
-        return apiService.getloggedinUser().then(response => {
-          this.fullName = response.firstName+" "+response.lastName;
-          this.mobileNumber = response.mobileNumber;
-          this.email = response.email;
+        
+          return apiService.getloggedinUser().then(response => {
+            this.mobileNumber = response.mobileNumber;
+            this.addressLine1 = response.addressLine1;
+            this.addressLine2 = response.addressLine2;
+            this.pincode = response.pincode;
+            console.log(response);
+            
+              this.email = response.email;
+
+
+            if(this.appFor =="self"){
+              this.fullName = response.firstName+" "+response.lastName;
+              
+            }else{
+              this.fullName = "";
+
+            }
+          
         })
+        
+        
       }
 
     },
@@ -623,7 +792,25 @@ import axios from 'axios';
         this.getBranches();
         this.getAvailableSlotsBranchWise();
         this.getLoggedinuser();
+    },
+    created: function(){
+      this.$root.breadcrumbs = [
+        {
+          text: 'Dashboard',
+          disabled: false,
+          href: '/dashboard'
+        },
+        {
+          text: 'APPOINTMENT FORM',
+          disabled: true,
+        }
+      ]
     }
     
   }
 </script>
+<style>
+.uppercase{
+  text-transform: uppercase
+}
+</style>

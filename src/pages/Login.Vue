@@ -67,7 +67,7 @@ export default {
   methods: {
     login(){
     let flag
-    return axios.post('http://server.mahatinnovations.com:9091/auth',{
+    return axios.post('http://localhost:9091/auth',{
       email: this.model.username,
       password: this.model.password,
     })

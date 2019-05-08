@@ -1,5 +1,6 @@
 import axios from 'axios';
-const API_URL = 'http://server.mahatinnovations.com:9091';
+// const API_URL = 'http://server.mahatinnovations.com:9091';
+const API_URL = 'http://localhost:9091';
 export class APIService{
      auth = {
         headers: {Authorization:localStorage.getItem('token')} 
@@ -116,6 +117,22 @@ getPaymentDetail(payid){
   }
   const url =`${API_URL}/onlineAppointments/getPaymentDetail/${payid}`;
   return axios.get(url,auth).then(response => response.data);
+}
+
+getMyConsultationRequests(){
+  const auth ={
+    headers:{Authorization:localStorage.getItem('token')}
+  }
+  const url =`${API_URL}/consultation/MyConsultationRequest`;
+  return axios.get(url, auth).then(response => response.data);
+}
+
+getOtherAppointments(){
+  const auth ={
+    headers:{Authorization:localStorage.getItem('token')}
+  }
+  const url=`${API_URL}/getOtherAppointment`;
+  return axios.get(url,auth).then(response=> response.data);
 }
 
 }
