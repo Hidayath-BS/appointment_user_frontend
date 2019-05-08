@@ -18,10 +18,10 @@
                     <v-flex xs6>
                         <v-layout row>
                             <v-flex xs6>
-                                <b>D.O.B :</b>
+                                <b>AGE :</b>
                             </v-flex>
                             <v-flex xs6>
-                                {{ appointmentDetails.dateOfBirth }}
+                                {{ appointmentDetails.age }}
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -78,7 +78,8 @@
 import {APIService} from '../APIService.js';
 import axios from 'axios';
 const apiService = new APIService();
-const API_URL = "http://server.mahatinnovations.com:9091"
+// const API_URL = "http://server.mahatinnovations.com:9091"
+const API_URL = "http://localhost:9091"
 
 export default {
     data(){

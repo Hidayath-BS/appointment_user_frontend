@@ -17,7 +17,7 @@
           >
             <template slot="items" slot-scope="props">
               <td>{{props.index+1}}</td>
-              <td class="text-xs-left">{{props.item.queryDate}}</td>
+              <td class="text-xs-left">{{props.item.query.queryDate}}</td>
               <td class="text-xs-left">
                 <br/>
                 
@@ -27,13 +27,13 @@
         <v-icon color="primary">A</v-icon>
       </template>
       <template v-slot:header>
-        <div style="font-size:16px">{{props.item.query}}</div>
+        <div style="font-size:16px">{{props.item.query.query}}</div>
       </template>
       <v-card>
         <v-card-text style="font-size:16px;background-color:cornsilk">
           <ul>
             <li v-for="response of props.item.responses" :key="response.id">
-            {{ response.response }}
+            {{ response.response }} - <u> {{ response.responseDate }} ( {{ response.responseTime }} )  </u> 
            </li>
           </ul>
           
@@ -46,7 +46,7 @@
   <v-card v-else>
     
       <v-card-title>
-        <div style="font-size:16px">{{props.item.query}}</div>
+        <div style="font-size:16px">{{props.item.query.query}}</div>
       </v-card-title>
     
   </v-card>
@@ -89,24 +89,18 @@ const apiService = new APIService();
       getQueriesList(){
         
         return apiService.getQueriesList().then(response=>{
-          this.QueryList = response;
-          this.sortQuestinoerrs();
-          for(let i= 0; i< this.QueryList.length; i++){
-            
-              this.getQueryResponses(this.QueryList[i].id).then(response1 => {
-                this.QueryList[i].responses =  response1;
-                this.QueryList[i].len = this.QueryList[i].responses.length;
-             });
-          }
+          this.QueryList = response.reverse();
+          this.getLen();
           console.log(this.QueryList);
           
         })
       },
 
-      sortQuestinoerrs(){
-        this.QueryList.sort(function(a,b){
-          return b.id - a.id;
-        })
+      getLen(){
+        for(let i=0; i< this.QueryList.length; i++){
+          let arr = this.QueryList[i].responses;
+          this.QueryList[i].len = arr.length;
+        }
       },
 
       getQueryResponses(id){
@@ -120,6 +114,19 @@ const apiService = new APIService();
     },
     computed: {
       
+    },
+    created: function(){
+      this.$root.breadcrumbs = [
+        {
+          text: 'Dashboard',
+          disabled: false,
+          href: '/dashboard'
+        },
+        {
+          text: 'Query List',
+          disabled: true,
+        }
+      ]
     }
   }
 </script>

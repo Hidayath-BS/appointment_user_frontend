@@ -44,24 +44,31 @@
       <v-flex xs12></v-flex>
 <br/>
  <div id="slott" style="display:none"> 
-  <v-layout row wrap>
-        <v-flex xs5 offset-xs1 v-for="ts of datewiseslot" :key="ts.id">
+   <v-container>
+     <v-layout row wrap>
+        <v-flex>
         <v-radio-group v-model="slotid" >
-                     <v-card>
+                     <v-card v-for="ts of datewiseslot" :key="ts.id">
+                       <v-card-title>
+                         <h5>{{ts.slot.slotName}}</h5>
+                       </v-card-title>
+                       <v-divider></v-divider>
                        <v-card-text>
-                         <label>{{ts.slot.slotName}}</label>
-                        <v-radio color="green" :value="ts.id"  ></v-radio>
+                         
+                        <v-radio color="green" :value="ts.id" :label="ts.slot.slotName"  ></v-radio>
                        </v-card-text>
                       </v-card>
-                </v-radio-group>
+        </v-radio-group>
        </v-flex>
        
  </v-layout>
+   </v-container>
+  
 </div>
 <v-flex xs12 ></v-flex>
        <v-btn  color="green" round dark @click="resheduleAppointment()"> Update
           </v-btn>
-          <v-btn @click="clear" color="error" round>Cancel</v-btn>
+          <v-btn color="error" round>Cancel</v-btn>
     </v-layout>
 
    </v-card-text>
@@ -71,7 +78,8 @@
 <script>
 import {APIService} from '../APIService.js';
 import axios from 'axios';
-const API_URL = 'http://server.mahatinnovations.com:9091';
+// const API_URL = 'http://server.mahatinnovations.com:9091';
+const API_URL = 'http://localhost:9091';
 const apiService = new APIService();
   export default {
     name: 'DatePickers',

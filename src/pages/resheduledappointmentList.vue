@@ -59,7 +59,8 @@
 </template>
 <script>
 import axios from 'axios';
-const API_URL = 'http://server.mahatinnovations.com:9091';
+// const API_URL = 'http://server.mahatinnovations.com:9091';
+const API_URL = 'http://localhost:9091';
 import {APIService} from '../APIService.js';
   export default {
     data () {

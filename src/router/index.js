@@ -161,6 +161,21 @@ const router = new Router({
           path: 'reschedule',
           name: 'Reschedule List',
           component: () => import('../pages/resheduledappointmentList')
+        },
+        {
+          path: 'newOpinionRequest',
+          name: 'New Opinion Request',
+          component: ()=> import('../pages/NewOpinionRequest')
+        },
+        {
+          path: 'OpinionConsultationList',
+          name: 'Opinion Consultation List',
+          component: ()=> import('../pages/OpinionConsultationList')
+        },
+        {
+          path: 'OtherAppointments',
+          name: 'Other Appointments',
+          component: ()=> import('../pages/OtherAppointmentList')
         }
         
       ]
