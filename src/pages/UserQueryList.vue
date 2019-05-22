@@ -5,9 +5,9 @@
      <br>
         <v-card>
           <v-card-title>
-            <h2>Query List</h2>
+            <h2>YOUR CONVERSATIONS</h2>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="neQuery()">Post New Query</v-btn>
+            <v-btn color="primary" @click="neConversation()">START NEW CONVERSATION</v-btn>
           </v-card-title>
           <v-divider></v-divider>
           <v-data-table
@@ -17,40 +17,12 @@
           >
             <template slot="items" slot-scope="props">
               <td>{{props.index+1}}</td>
-              <td class="text-xs-left">{{props.item.query.queryDate}}</td>
+              <td class="text-xs-left">{{props.item.startDate}} / {{ props.item.startTime }}</td>
+              <td class="text-xs-left"> {{props.item.topic}} </td>
               <td class="text-xs-left">
-                <br/>
-                
-               <v-expansion-panel v-if="props.item.len > 0">
-    <v-expansion-panel-content>
-      <template v-slot:actions>
-        <v-icon color="primary">A</v-icon>
-      </template>
-      <template v-slot:header>
-        <div style="font-size:16px">{{props.item.query.query}}</div>
-      </template>
-      <v-card>
-        <v-card-text style="font-size:16px;background-color:cornsilk">
-          <ul>
-            <li v-for="response of props.item.responses" :key="response.id">
-            {{ response.response }} - <u> {{ response.responseDate }} ( {{ response.responseTime }} )  </u> 
-           </li>
-          </ul>
-          
-          
-          
-        </v-card-text>
-      </v-card>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
-  <v-card v-else>
-    
-      <v-card-title>
-        <div style="font-size:16px">{{props.item.query.query}}</div>
-      </v-card-title>
-    
-  </v-card>
-  <br/>
+                <v-btn fab small icon color="primary" dark @click="conversationDetials( props.item.id )"> 
+                  <v-icon>visibility</v-icon>
+                </v-btn>
               </td>
             </template>
             <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -76,6 +48,7 @@ const apiService = new APIService();
           { text: 'Sl.no',value: 'slno' },
           { text: 'Date', value: 'date' },
           { text: 'Query', value: 'Query' },
+          { text: 'view', value: 'view'}
         ],
         QueryList:[],
       }
@@ -90,7 +63,7 @@ const apiService = new APIService();
         
         return apiService.getQueriesList().then(response=>{
           this.QueryList = response.reverse();
-          this.getLen();
+          // this.getLen();
           console.log(this.QueryList);
           
         })
@@ -98,17 +71,21 @@ const apiService = new APIService();
 
       getLen(){
         for(let i=0; i< this.QueryList.length; i++){
-          let arr = this.QueryList[i].responses;
+          let arr = this.QueryList[i].queries;
           this.QueryList[i].len = arr.length;
         }
+      },
+
+      conversationDetials(id){
+        this.$router.push('/ConversationDetials/'+id);
       },
 
       getQueryResponses(id){
         return apiService.getResponsesList(id).then(res =>res);
       },
 
-      neQuery(){
-        this.$router.push('/AskQuery');
+      neConversation(){
+        this.$router.push('/NewConversation');
       }
       
     },

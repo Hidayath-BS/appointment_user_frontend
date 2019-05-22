@@ -107,7 +107,7 @@ getQueriesList(){
   const auth ={
     headers:{Authorization:localStorage.getItem('token')}
   }
-  const url=`${API_URL}/getQueries`;
+  const url=`${API_URL}/getConversations`;
   return axios.get(url,auth).then(response => response.data);
 }
 
@@ -133,6 +133,30 @@ getOtherAppointments(){
   }
   const url=`${API_URL}/getOtherAppointment`;
   return axios.get(url,auth).then(response=> response.data);
+}
+
+getRefferedDoctors(){
+  const auth ={
+    headers:{Authorization:localStorage.getItem('token')}
+  }
+  const url=`${API_URL}/masters/allReferralDoctors`;
+  return axios.get(url,auth).then(response=> response.data);
+}
+
+getConversationDetails(id){
+  const auth ={
+    headers:{Authorization:localStorage.getItem('token')}
+  }
+  const url=`${API_URL}/getConversationdetails/${id}`;
+  return axios.get(url,auth).then(response=> response.data);
+}
+
+getReviewDates(){
+  const auth = {
+      headers: { Authorization: localStorage.getItem('token') } 
+    }
+    const url = `${API_URL}/getReviewDatesPatientWise`;
+  return axios.get(url, auth).then(response => response.data);
 }
 
 }
