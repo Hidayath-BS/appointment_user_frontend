@@ -87,14 +87,46 @@
                :rules="[v => !!v || 'Please Enter Your Age']"
                 type="number" :max="100" v-model="age"></v-text-field>
             </v-flex> 
+
             <v-flex xs12 md3 offset-md1>
-               <v-text-field type="text" label="Current Eye Problem" ></v-text-field>
+            <v-menu
+            ref="dob"
+          :close-on-content-click="false"
+          v-model="menu1"
+          :nudge-right="40"
+          :return-value.sync="date1"
+          lazy
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+          class="fields"
+            >
+              <v-text-field
+            slot="activator"
+            v-model="dob"
+            label="Select Date Of Birth"
+            prepend-icon="event"
+            :rules="[v => !!v || 'Please Select Your Date of Birth']"
+            readonly
+          ></v-text-field>
+          <v-date-picker v-model="dob"  no-title scrollable>
+            <v-spacer></v-spacer>
+            <v-btn flat color="primary" @click="menu1 = false">Cancel</v-btn>
+            <v-btn flat color="primary" @click="$refs.dob.save(date1),calculateAge()">OK</v-btn>
+          </v-date-picker>
+            </v-menu>
             </v-flex>
+
+            
             
      </v-layout>
 
      <v-layout row wrap>
             <v-flex xs12 md3>
+               <v-text-field type="text" label="Current Eye Problem" ></v-text-field>
+            </v-flex>
+            <v-flex xs12 md3 offset-md1>
               <v-select
                       :items="genders"
                       label="Select Gender"
@@ -106,11 +138,7 @@
                     ></v-select>
             </v-flex>
 
-            <v-flex xs12 md3 offset-md1>
-              <v-text-field label="Reffered By " v-model="refferedBy">
-
-              </v-text-field>
-            </v-flex>
+            
             
            <v-flex xs12 md3 offset-md1>
               <v-select
@@ -170,6 +198,33 @@
                       @change="filterDoctorSlots(doctor)"
                     ></v-select>
             </v-flex>
+     </v-layout>
+
+     <v-layout row wrap>
+       <v-flex xs12 sm4>
+          <v-subheader>Referred By
+          <v-radio-group row v-model="referredType">
+            <v-radio label="DOCTORS" value="DOCTOR" color="blue"></v-radio>
+            <v-radio label="OTHERS" value="OTHERS" color="blue"></v-radio>
+          </v-radio-group>
+          </v-subheader>
+        </v-flex>
+        <v-flex xs12 sm4 v-if="referredType == 'DOCTOR'">
+          <v-autocomplete
+          :items="referredDoctors"
+          label="Referred Doctors"
+          item-text="fullName"
+          item-value="fullName"
+          v-model="refferedBy"
+          class="fields">
+          </v-autocomplete>
+        </v-flex>
+
+       <v-flex xs12 v-else md3 offset-md1>
+              <v-text-field label="Reffered By " v-model="refferedBy">
+
+              </v-text-field>
+        </v-flex>
      </v-layout>
 
      <v-layout row wrap>
@@ -397,7 +452,7 @@
      <v-layout row wrap>
        <v-flex xs12 sm8 offset-sm2>
         <div class="text-xs-center">
-          <v-btn round color="success" :disabled="!valid"  @click="submit1()">Submit</v-btn>
+          <v-btn round color="success" :disabled="!valid"  @click="submit('COA')">Submit</v-btn>
           <v-btn round color="error">Cancel</v-btn>
         </div>
       </v-flex>
@@ -423,7 +478,7 @@
             </v-layout>
           </v-card-text>
           <v-divider></v-divider>
-          <v-card-action></v-card-action>
+          
         </v-card>
       </v-dialog>
 </v-container>
@@ -500,6 +555,8 @@ import axios from 'axios';
         addressLine2: "",
         pincode:"",
 
+        date1: "",
+
         
 
 
@@ -540,7 +597,10 @@ import axios from 'axios';
           required: value=> !!value || "Required",
           counter: value=> value.length <= 10 || "Max 10 digits"
         },
-        prefarance:"YES"
+        prefarance:"YES",
+
+        referredType: "DOCTOR",
+        referredDoctors: []
         
         
       }
@@ -677,6 +737,14 @@ import axios from 'axios';
       
     },
 
+    getReferredDoctors(){
+      return apiService.getRefferedDoctors().then((response)=>{
+        this.referredDoctors = response;
+        console.log(this.referredDoctors);
+        
+      })
+    },
+
     priorityCheck(){
       if(this.prefarance == "YES"){
         this.filterDoctorSlots(this.doctor);
@@ -716,10 +784,8 @@ import axios from 'axios';
          "pincode":this.pincode
        } ;
 
-
-
-
-      //  let url ="http://server.mahatinnovations.com:9091/onlineAppointments/addOnlineAppointment";
+        if(this.$refs.form.validate()){
+          //  let url ="http://server.mahatinnovations.com:9091/onlineAppointments/addOnlineAppointment";
        let url ="http://localhost:9091/onlineAppointments/addOnlineAppointment";
        const auth = {
         headers: { Authorization: localStorage.getItem('token') },
@@ -731,18 +797,7 @@ import axios from 'axios';
            console.log(response);
            if(response.status == 200){
              
-             if(formRequest.payment_method == "ONLINE"){
-               this.paymentUrl = response.data.paymentUrl;
-               console.log(this.paymentUrl);
-               
-               window.location.assign(response.data.paymentUrl);
-              //  this.$router.go(response.data.paymentUrl);
-             }else{
-               this.$router.push('/dashboard');
-             }
-             
-             
-
+             this.$router.push('/dashboard');
 
            }else{
              alert("Oops !!! something went wrong , Try again later");
@@ -750,11 +805,7 @@ import axios from 'axios';
          },err=>{
            alert("Oops !!! something went wrong , Try again later");
          });
-         
-         
-         
-       
-        
+        }
       },
       getLoggedinuser(){
         
@@ -779,6 +830,15 @@ import axios from 'axios';
         })
         
         
+      },
+      calculateAge(){
+        let myDate= new Date(this.dob),
+                        milli = myDate.getTime(),
+                        newDate = new Date(),
+                        newMilli = newDate.getTime();
+        this.age = Math.floor((newMilli - milli)/1000/60/60/24/30/12);
+        console.log(this.age);
+        
       }
 
     },
@@ -792,6 +852,7 @@ import axios from 'axios';
         this.getBranches();
         this.getAvailableSlotsBranchWise();
         this.getLoggedinuser();
+        this.getReferredDoctors();
     },
     created: function(){
       this.$root.breadcrumbs = [

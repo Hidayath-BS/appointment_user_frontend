@@ -1,5 +1,10 @@
 <template>
 <v-container fluid>
+  
+<marquee-text :duration="20" no-repeat class="marque" >
+  {{ marqueText }}
+</marquee-text><br>
+
   <v-layout row wrap>
     <v-flex md8 xs12>
       
@@ -10,7 +15,9 @@
          </v-card-title>
          <v-divider></v-divider>
          <v-card-text>
-           <v-container  grid-list-xl>
+           
+
+           <v-container v-if="appointmentlist.length > 0"  grid-list-xl>
               <v-layout row wrap>
             <v-flex md6 v-for="(app ,i) of appointmentlist" :key="i">
               <v-card class="card-border">
@@ -23,7 +30,7 @@
                       Time Slot : {{ app.slot.slot.slotName }}<br>
                       Branch : {{ app.slot.branch.branchName }}<br>
                       Doctor : {{ app.slot.doctor.username }}<br>
-                      {{app.id}}
+                      
                     </p>
                     
                     <div>
@@ -39,6 +46,20 @@
             
             </v-layout>
             </v-container>
+
+            <v-container v-else grid-list-xl>
+             <v-layout row wrap>
+               <v-flex>
+                 <v-card class="card-border">
+                   <v-card-title primary-title>
+                     <div class="text-center">
+                       <b>NO APPOINTMENTS</b>
+                     </div>
+                   </v-card-title>
+                 </v-card>
+               </v-flex>
+             </v-layout>
+           </v-container>
          </v-card-text>
        </v-card>
 
@@ -313,6 +334,8 @@ const apiService = new APIService();
         appointmentlist:[],
         doctorList:[],
         serviceList:[],
+        applist: [],
+        marqueText: ""
       }
     },
    
@@ -342,12 +365,28 @@ const apiService = new APIService();
       },
       reschedule(id){
         this.$router.push('/reschedule/'+id);
-      }
+      },
+      getReviewDate(){
+        return apiService.getReviewDates().then(response=>{
+          this.applist = response;
+
+          let text = '';
+          let length = response.length;
+          for(let i = 0; i< length; i++){
+            let tex = " | Your next Review Date is :"+this.applist[i].reviewDate;
+            text += tex;
+          }
+          this.marqueText = text;
+          console.log(this.applist);
+          
+        })
+      },
     },
     mounted(){
       this.getappointmentList();
       this.getdoctorList();
       this.getseviceList();
+      this.getReviewDate();
     },
      created: function(){
       this.$root.breadcrumbs = []
@@ -473,6 +512,14 @@ div.designforser.v-card.v-sheet.theme--light:after{
 }
 .card-border{
   border: 3px solid darkblue !important;
+}
+.text-center{
+  text-align: center;
+}
+
+.marque{
+  font-size: 18px;
+  color: darkblue;
 }
 
 </style>

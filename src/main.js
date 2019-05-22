@@ -6,6 +6,10 @@ import 'babel-polyfill'
 
 import router from './router'
 
+import MarqueeText from 'vue-marquee-text-component'
+ 
+Vue.component('marquee-text', MarqueeText)
+
 Vue.use(Vuetify, {
 	theme:  {
 	  primary: "#039BE5",

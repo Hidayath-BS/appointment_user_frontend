@@ -137,7 +137,7 @@ const router = new Router({
           component: () => import('../pages/CancelAppointment')
         },
         {
-          path: 'AskQuery',
+          path: 'AskQuery/:id',
           name: 'AskQuery',
           component: () => import('../pages/AskQuery')
         }, 
@@ -176,6 +176,16 @@ const router = new Router({
           path: 'OtherAppointments',
           name: 'Other Appointments',
           component: ()=> import('../pages/OtherAppointmentList')
+        },
+        {
+          path: 'ConversationDetials/:id',
+          name: 'ConversationDetails',
+          component: ()=> import('../pages/ConversationDetails')
+        },
+        {
+          path: 'NewConversation',
+          name: 'New Conversation',
+          component: ()=> import('../pages/NewConversation')
         }
         
       ]
