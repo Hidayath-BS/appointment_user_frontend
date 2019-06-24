@@ -497,9 +497,9 @@ div.designforser.v-card.v-sheet.theme--light:after{
     padding:8px;
    border-bottom:5px solid white!important;
     }
-.v-btn .v-btn__content .v-icon{
+/* .v-btn .v-btn__content .v-icon{
   color:transparent;
-}
+} */
 .v-image__image--cover{
   background-size:contain;
 }
