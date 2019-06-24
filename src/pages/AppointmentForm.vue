@@ -107,7 +107,6 @@
             v-model="dob"
             label="Select Date Of Birth"
             prepend-icon="event"
-            :rules="[v => !!v || 'Please Select Your Date of Birth']"
             readonly
           ></v-text-field>
           <v-date-picker v-model="dob"  no-title scrollable>
@@ -452,7 +451,7 @@
      <v-layout row wrap>
        <v-flex xs12 sm8 offset-sm2>
         <div class="text-xs-center">
-          <v-btn round color="success" :disabled="!valid"  @click="submit('COA')">Submit</v-btn>
+          <v-btn :loading="loading" round color="success" :disabled="!valid"  @click="submit('COA'),loader = 'loading'">Submit</v-btn>
           <v-btn round color="error">Cancel</v-btn>
         </div>
       </v-flex>
@@ -460,27 +459,6 @@
     </v-form>
     </v-card-text>
   </v-card>
-  <v-dialog v-model="paymentdialog" max-width="400">
-        <v-card>
-          <v-card-title>
-           <h3> Please Select Your Payment Method </h3> 
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-layout row wrap>
-              <v-flex>
-                <v-btn color="primary" @click="submit('COA')" dark>CASH ON ARRIVAL</v-btn>
-              </v-flex>
-              <v-spacer></v-spacer>
-              <v-flex>
-                 <v-btn color="primary" :href="paymentUrl" @click="submit('ONLINE')" dark>ONLINE PAYMENT</v-btn>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
-          <v-divider></v-divider>
-          
-        </v-card>
-      </v-dialog>
 </v-container>
 
 
@@ -505,6 +483,8 @@
 <script>
 import {APIService} from '../APIService.js';
 const API_URL = 'http://server.mahatinnovations.com:9091';
+// const API_URL = 'http://localhost:9091';
+
 const apiService = new APIService();
 import axios from 'axios';
   export default {
@@ -521,6 +501,8 @@ import axios from 'axios';
         modal: false,
         dialog1: false,
         paymentdialog:false,
+        loader: null,
+        loading: false,
 
         paymentUrl:"",
 
@@ -796,7 +778,7 @@ import axios from 'axios';
            return axios.post(url, formRequest, auth).then(response=>{
            console.log(response);
            if(response.status == 200){
-             
+             alert("Appointment booked successfully");
              this.$router.push('/dashboard');
 
            }else{
@@ -824,7 +806,11 @@ import axios from 'axios';
               
             }else{
               this.fullName = "";
-
+              this.mobileNumber = "";
+              this.email = "";
+              this.addressLine1 = "";
+              this.addressLine2 = "";
+              this.pincode = "";
             }
           
         })
@@ -845,6 +831,14 @@ import axios from 'axios';
     watch: {
       menu5 (val) {
         val && this.$nextTick(() => (this.$refs.picker5.activePicker = 'YEAR'))
+      },
+       loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 5000)
+
+        this.loader = null
       }
     },
 
@@ -874,4 +868,40 @@ import axios from 'axios';
 .uppercase{
   text-transform: uppercase
 }
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

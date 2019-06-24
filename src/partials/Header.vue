@@ -138,12 +138,13 @@
           <v-icon light>notifications</v-icon>
         </v-avatar>
       </v-badge> -->
-      <!-- <v-badge overlap color="red">
-        <small slot="badge">5</small>
-        <v-avatar color="transparent red--after" size="36">
-          <v-icon light>email</v-icon>
-        </v-avatar>
-      </v-badge> -->
+       <v-chip color="primary">
+         <b class="white-text">
+           WELCOME :
+         {{ username }}
+         </b>
+         
+       </v-chip>
       <v-menu bottom left transition="slide-y-transition">
         <v-btn slot="activator" icon>
           <v-icon class="grey--text text--darken-1">account_circle</v-icon>
@@ -152,7 +153,7 @@
           <v-list-tile>
             <v-list-tile-action>
               <v-btn fab small @click="logout">
-              <v-icon>lock_open</v-icon>
+              <v-icon>exit_to_app</v-icon>
               </v-btn>
             </v-list-tile-action>
             <v-list-tile-title>Logout</v-list-tile-title>
@@ -171,6 +172,7 @@
       return {
         title: 'AMS-USER',
         drawer: true,
+        username: localStorage.getItem('username'),
         admins: [
           ['Management', 'people_outline'],
           ['Settings', 'settings']
@@ -199,5 +201,8 @@
 <style>
 .blue-grey.darken-3{
   background: #eeeeee !important;
+}
+.white-text{
+  color: #ffffff;
 }
 </style>

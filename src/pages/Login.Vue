@@ -52,7 +52,8 @@
 <script>
 import {APIService} from '../APIService.js';
 import axios from 'axios';
-const API_URL = 'http://server.mahatinnovations.com:9091';
+// const API_URL = 'http://server.mahatinnovations.com:9091';
+const API_URL = 'http://localhost:9091';
 const apiService = new APIService();
 
 export default {
@@ -67,7 +68,8 @@ export default {
   methods: {
     login(){
     let flag
-    return axios.post('http://localhost:9091/auth',{
+    let url = `${API_URL}/auth`;
+    return axios.post(url,{
       email: this.model.username,
       password: this.model.password,
     })
@@ -115,6 +117,7 @@ export default {
         if(authorities.authority[i].role == "PATIENT"){
           
           localStorage.setItem("role","PATIENT");
+          localStorage.setItem("username", response.firstName);
           this.successLogin();
           fail = 0;
           break;
