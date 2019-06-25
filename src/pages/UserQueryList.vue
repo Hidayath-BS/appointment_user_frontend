@@ -36,10 +36,11 @@
     
 </template>
 <script>
- import {APIService} from '../APIService.js';
+import {APIService} from '../APIService.js';
 import axios from 'axios';
-const API_URL = 'http://server.mahatinnovations.com:9091';
 const apiService = new APIService();
+const API_URL = apiService.serverUrl;
+
   export default {
     data () {
       return {

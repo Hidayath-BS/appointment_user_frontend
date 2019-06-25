@@ -95,7 +95,7 @@
 import {APIService} from '../APIService.js';
 import axios from 'axios';
 const apiService = new APIService();
-const API_URL = "http://server.mahatinnovations.com:9091"
+const API_URL = apiService.serverUrl;
 
 export default {
     data(){
