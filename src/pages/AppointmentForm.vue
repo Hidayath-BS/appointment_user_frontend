@@ -482,11 +482,10 @@
 </template>
 <script>
 import {APIService} from '../APIService.js';
-const API_URL = 'http://server.mahatinnovations.com:9091';
-// const API_URL = 'http://localhost:9091';
-
-const apiService = new APIService();
 import axios from 'axios';
+const apiService = new APIService();
+const API_URL = apiService.serverUrl;
+
   export default {
     name: 'DatePickers',
     
@@ -767,8 +766,8 @@ import axios from 'axios';
        } ;
 
         if(this.$refs.form.validate()){
-          //  let url ="http://server.mahatinnovations.com:9091/onlineAppointments/addOnlineAppointment";
-       let url ="http://localhost:9091/onlineAppointments/addOnlineAppointment";
+           let url ="${API_URL}/onlineAppointments/addOnlineAppointment";
+      //  let url ="http://localhost:9091/onlineAppointments/addOnlineAppointment";
        const auth = {
         headers: { Authorization: localStorage.getItem('token') },
        };
