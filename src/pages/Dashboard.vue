@@ -64,7 +64,7 @@
        </v-card>
 
 		   			
-			  
+		 <br><br>  
     </v-flex>
     <v-flex md3 offset-md1 xs12>
        <div class="title">Services</div>
@@ -110,41 +110,72 @@
       <v-layout row wrap>
 						 <v-flex md3 xs6>
 					 <v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa1"
-      :key="i"
-      :src="item.src" style="height:140px;padding:10px;"
-	    ></v-carousel-item>
+    <v-carousel-item >
+      <img src="../static/images-tpa/catarex31.png" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/pdt.jpg" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+
+    
+      
   </v-carousel>
 						 </v-flex>
 						 <v-flex md3 xs6>
 	<v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa2"
-      :key="i"
-      :src="item.src"
-			style="height:140px;padding:10px;"
-    ></v-carousel-item>
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/cirrus-oct.png" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/lasikmachine2.jpg" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/echorule2.jpg" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+
+    
   </v-carousel>
 						 </v-flex>
 						 <v-flex md3 xs6>
 	<v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa3"
-      :key="i"
-      :src="item.src"
-		style="height:140px;padding:10px;"
-    ></v-carousel-item>
+
+    
+    <v-carousel-item>
+      <img src="../static/images-tpa/TMS_4N.png" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/humphrey.jpg" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/yag-laser.png" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+
+    
   </v-carousel>
 						 </v-flex>
 						 <v-flex md3 xs6>
 	<v-carousel hide-delimiters class="tpa-slide">
-    <v-carousel-item
-      v-for="(item,i) in tpa4"
-      :key="i"
-      :src="item.src"
-		style="height:140px;padding:10px;"
-    ></v-carousel-item>
+
+    
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/soveriegn.jpg" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+    <v-carousel-item>
+      <img src="../static/images-tpa/catarex31.png" style="height:140px;padding:10px;" alt="">  
+    </v-carousel-item>
+
+
   </v-carousel>
 						 </v-flex>
 						 </v-layout>
@@ -273,27 +304,27 @@ const API_URL = apiService.serverUrl;
 
 				tpa1: [
           {
-            src:"../public/images-tpa/abreyometer.jpg"
+            src:"../static/BN-logo-47.png"
           },
          
           {
-           src:"../public/images-tpa/catarex31.png"
+           src:"../static/images-tpa/catarex31.png"
           },
           	{
-						src:"../public/images-tpa/pdt.jpg"
+						src:"../static/images-tpa/pdt.jpg"
 					},
 				],
 				tpa2: [
           {
-            src:"../public/images-tpa/cirrus-oct.png"
+            src:"../static/images-tpa/cirrus-oct.png"
           },
           
           {
-           src:"../public/images-tpa/lasikmachine2.jpg"
+           src:"../static/images-tpa/lasikmachine2.jpg"
           },
         	
           {
-           src:"../public/images-tpa/echorule2.jpg"
+           src:"../static/images-tpa/echorule2.jpg"
           },
          		
 				],
@@ -301,26 +332,26 @@ const API_URL = apiService.serverUrl;
 
 				
           {
-						src:"../public/images-tpa/TMS_4N.png"
+						src:"../static/images-tpa/TMS_4N.png"
           },
           	{
-						src:"../public/images-tpa/humphrey.JPG"
+						src:"../static/images-tpa/humphrey.JPG"
 					},
 					{
-           src:"../public/images-tpa/yag-laser.png"
+           src:"../static/images-tpa/yag-laser.png"
           },
            
 					
 				],
 				tpa4: [
 				 {
-           src:"../public/images-tpa/pachymetry.jpeg"
+           src:"../static/images-tpa/pachymetry.jpeg"
           },
           {
-            src:"../public/images-tpa/soveriegn.jpg"
+            src:"../static/images-tpa/soveriegn.jpg"
           },
          {
-           src:"../public/images-tpa/catarex31.png"
+           src:"../static/images-tpa/catarex31.png"
           },
           
      	],

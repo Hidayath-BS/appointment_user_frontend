@@ -1,77 +1,65 @@
 <template>
-<v-app id="login" class="primary">
+<v-app id="login">
   <v-content>
-    <img src="../static/BN-logo-47.png" alt="Bangalore Nethralaya" width="380" height="80" id="logo">
     <v-container fluid fill-height>
-      <v-slide-y-transition mode="out-in">
         <v-layout align-center justify-center id="reg">
-          <v-flex xs12 sm12 md5 id="reg1">
-            <v-stepper v-model="e1">
-    <v-stepper-header id="reg1">
-      <v-stepper-step :complete="e1 > 1" step="1">Step 1</v-stepper-step>
+          <v-flex xs12 sm12 md5>
+            <v-card class="mx-auto regg7">
+             <center> <img src="../static/BN-logo-47.png" alt="Bangalore Nethralaya" width="305" height="80" id="logo"></center>
+              <h2 class="regg5">Register Here</h2>
+              <v-card-text>
+                <v-form ref="form"
+                        v-model="valid"
+                lazy-validation>
+                <v-layout row wrap>
+                 <v-flex lg5 xs12 sm12>
+                   <v-text-field
+                   name="firstname"
+                   label="First Name"
+                   type="text"
+                   v-model="firstName"
+                   :rules="[v => !!v || 'Please Enter the firstname']"
+                 ></v-text-field>
+                 </v-flex>
+                <v-spacer></v-spacer>
+                <v-flex lg5 xs12 sm12>
+                  <v-text-field
+                   name="lastname"
+                   label="Last Name"
+                   type="text"
+                   v-model="lastName"
+                   :rules="[v => !!v || 'Please Enter the lastname']"
+                ></v-text-field>
+                </v-flex>
+                
+                </v-layout>
 
-      <!-- <v-divider></v-divider> -->
+                <v-layout row wrap>
+                 <v-flex lg5 xs12 sm12>
+                   <v-text-field
+                   name="mobilenumber"
+                   label="Mobile Number"
+                   type="number"
+                    v-model="mobileNumber"
+                    :rules="[v => !!v || 'Please Enter the mobile number']"
+                 ></v-text-field>
+                 </v-flex>
+                <v-spacer></v-spacer>
+                <v-flex lg5 xs12 sm12>
+                  <v-text-field
+                   name="email"
+                   label="Email"
+                   type="email"
+                   v-model="email"
+                   :rules="[v => !!v || 'Please Enter the email-id']"
+                ></v-text-field>
+                </v-flex>
+                
+                </v-layout>
 
-      <v-stepper-step :complete="e1 > 2" step="2">Step 2</v-stepper-step>
-
-      
-    </v-stepper-header>
-
-    <v-stepper-items>
-      <v-stepper-content step="1">
-        
-          <v-card-text>
-          <v-layout row wrap>
-            <v-flex xs5>
-          <v-text-field
-            label="First Name"
-            v-model="firstName"
-            ></v-text-field>
-            </v-flex>
-            <v-spacer></v-spacer>
-            <v-flex xs5>
-          <v-text-field
-            label="Last Name"
-            v-model="lastName"
-            ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <v-text-field
-            label="Mobile Number"
-            type="number"
-            v-model="mobileNumber"
-          ></v-text-field>
-          <v-text-field
-            label="Email"
-            v-model="email"
-          ></v-text-field>
-          <v-text-field
-            label="Password"
-            type="password"
-            v-model="password"
-          ></v-text-field>
-          
-        </v-card-text>
-     
-
-        <v-layout row wrap>
-          <v-flex>
-          </v-flex>
-          <v-flex xs3>
-            <v-btn color="primary" @click="e1 = 2">Continue</v-btn>
-          </v-flex>
-        
-        <!-- <v-flex>
-        <v-btn color="red">Cancel</v-btn>
-        </v-flex> -->
-        </v-layout>
-      </v-stepper-content>
-
-      <v-stepper-content step="2">
-        <v-card-text>
-          <v-layout row wrap>
-            <v-flex xs5> 
-          <v-select
+                <v-layout row wrap>
+                 <v-flex lg5 xs12 sm12>
+                   <v-select
                       :items="states"
                       label="Select State"
                       item-text="state"
@@ -79,57 +67,95 @@
                       v-model="stateid"
                       @input="getcity( stateid )"
                       single-line
-                    ></v-select></v-flex>
-                    <v-spacer></v-spacer>
-          <v-flex xs5>
-              <v-select
+                      :rules="[v => !!v || 'Please Select state']"
+                    ></v-select>
+
+                 </v-flex>
+                <v-spacer></v-spacer>
+                <v-flex lg5 xs12 sm12>
+                  <v-select
                       :items="cities"
                       label="Select City"
                       v-model="cityid"
                       item-text="city"
                       item-value="id"
                       single-line
+                      :rules="[v => !!v || 'Please Select city']"
                     ></v-select>
-          </v-flex>
-          </v-layout>
-          <v-text-field
-            label="Address Line 1"
-            type="text"
-            v-model="addressLine1"
-          ></v-text-field>
-           <v-text-field
-            label="Address Line 2"
-            type="text"
-            v-model="addressLine2"
-          ></v-text-field>
-          <v-text-field
-            label="Pincode"
-            type="number"
-            v-model="pincode"
-          ></v-text-field>
-        </v-card-text>
 
-       <v-layout row wrap>
-          <v-flex>
-        <v-btn color="red" @click="e1 = 1">Back</v-btn>
-        </v-flex>
-          <v-flex>
-          </v-flex>
-          <v-flex xs3>
-            <v-btn color="primary" @click="formSubmit()">Register</v-btn>
-          </v-flex>
-        
-       
-        </v-layout>
-      </v-stepper-content>
+                </v-flex>
+                
+                </v-layout>
 
-      
-      
-    </v-stepper-items>
-  </v-stepper>
+                <v-layout>
+                  <v-flex lg12 xs12 sm12>
+                  <v-text-field
+                   name="addressline1"
+                   label="Address Line1"
+                   type="text"
+                    v-model="addressLine1"
+                    :rules="[v => !!v || 'Please Enter the address']"
+                ></v-text-field>
+                </v-flex>
+                </v-layout>
+
+                <v-layout>
+                  <v-flex lg12 xs12 sm12>
+                  <v-text-field
+                   name="addressline2"
+                   label="Address Line2"
+                   type="text"
+                   v-model="addressLine2"
+                   :rules="[v => !!v || 'Please Enter the address']"
+                ></v-text-field>
+                </v-flex>
+                </v-layout>
+
+                <v-layout>
+                  <v-flex lg12 xs12 sm12>
+                  <v-text-field
+                   name="pincode"
+                   label="Pincode"
+                   type="number"
+                   v-model="pincode"
+                   :rules="[v => !!v || 'Please Enter the pincode']"
+                ></v-text-field>
+                </v-flex>
+                </v-layout>
+
+                <v-layout>
+                  <v-flex lg12 xs12 sm12>
+                  <v-text-field
+                   name="password"
+                   label="Password"
+                   type="password"
+                   v-model="password"
+                   :rules="[v => !!v || 'Please Enter the password']"
+                ></v-text-field>
+                </v-flex>
+                </v-layout>
+
+             </v-form>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-layout row wrap>
+                  <v-spacer></v-spacer>
+                  <v-flex lg5 sm6 xs9>
+                    <v-btn color="blue" @click="formSubmit()" dark outline>Register</v-btn>
+                    <v-btn color="red" dark outline @click="reset()" >Cancel</v-btn>
+                  </v-flex>
+                  <v-spacer></v-spacer>
+                </v-layout>
+              </v-card-actions>
+               
+                   <center><router-link class="regg9" to="/login">Already have an account?Login Here</router-link></center>   
+                 <br>
+                
+            </v-card>
           </v-flex>
         </v-layout>
-      </v-slide-y-transition>
+    
     </v-container>
   </v-content>    
 </v-app>
@@ -158,14 +184,20 @@ const API_URL = apiService.serverUrl;
          stateid:null,
          cityid: null,
          id:null,
+         formRequest: null,
+        displayError: false,
 
 
 
       }
     },
     methods:{
+      reset () {
+        this.$refs.form.reset()
+      },
+      
       getstate(){
-      apiService.getStates().then((response) =>
+      apiService.getState().then((response) =>
       {
         this.states=response;
         console.log(response);
@@ -183,8 +215,8 @@ const API_URL = apiService.serverUrl;
         headers: {
           Authorization:localStorage.getItem('token')
           } 
-           }
-          const url=`${API_URL}/patientRegister`;
+        }
+          const url=`${API_URL}/register/patientRegister`;
           return axios.post(url,{"firstName": this.firstName,
                                   "lastName": this.lastName,
                                   "email": this.email,
@@ -222,18 +254,35 @@ const API_URL = apiService.serverUrl;
     left: 0;
     content: "";
     z-index: 0;
+    background-color: blue;
   }
 
-  #reg{
+  /* #reg{
     margin-top: -100px;
     
-  }
+  } */
 
   #reg1{
-  background-color:red;
+    background-color: crimson;
   }
 
   #logo{
     margin-top: 10px;
   }
+
+  .regg5{
+    text-align: center;
+    color: red;
+  }
+
+  .regg7{
+    border-radius: 2%;
+    border: 1px solid red;
+  }
+
+  .regg9{
+    text-decoration: none;
+  }
+
+  
 </style>

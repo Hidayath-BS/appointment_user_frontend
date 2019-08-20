@@ -1,46 +1,42 @@
-<template style = "background-color: red">
-<v-app id="login">
-    <div id="app">
-  <v-container>
-    <v-layout row class="text-xs-center" style="border-radius:9%">
-      <!-- <v-flex xs4>
-        <v-card height="500px" style="background-color: lightblue"></v-card>
-      </v-flex> -->
-      <v-flex xs6 offset-xs3 class="grey lighten-4">
-        <v-container style="top: 10%;height:500px;border:2px solid blue" class="text-xs-center">
-          <img src="/static/BN-logo-47.png" alt="Bangalore Nethralaya" width="380" height="80">
-          <br><br><v-card flat>
-            <v-card-title primary-title>
-              <h4>Reset Password</h4>
-            </v-card-title>
-            <v-form>
-              <v-flex xs12 sm11>
-            <v-text-field prepend-icon="lock" name="Password" label="New Password" type="password" v-model="password"></v-text-field>
+<template>
+<v-container fluid class="logg7">
+    
+        <br><br>
+    <v-layout row wrap >
+
+      <v-flex lg4 md4></v-flex>
+      <v-flex lg4 md4 sm12 xs12>
+         <v-card class="mx-auto logg3">
+           <v-flex>
+             <center>
+               <img src="../static/BN-logo-47.png" class="logg6" alt="Vue Material Admin" width="310" height="80"/>
+             </center>
+             </v-flex>
+          <h3 class="logg5">Reset Password</h3>
+           <v-card-text>
+              <v-form>
+               <v-text-field prepend-icon="lock" name="Password" label="New Password" type="password" v-model="password"></v-text-field>
             <v-text-field prepend-icon="lock" name="Password" label="Confirm Password" type="password"></v-text-field>
+
+             </v-form>
+            
+           </v-card-text>
+          <v-card-actions>
+            <v-flex lg2>
+
             </v-flex>
-             
-            <v-card-actions>
-              <v-layout row wrap>
-                  <v-flex xs1></v-flex>
-                <v-flex xs4>
-                    <v-btn error block color="error">Cancel</v-btn>
-                </v-flex>
-                <v-flex xs2></v-flex>
-              <v-flex xs4>
-              <v-btn primary block color="primary" @click="changePassword()">Submit</v-btn>
-              </v-flex>
-              </v-layout>
-            </v-card-actions>
-             
-            </v-form>
-          </v-card>
-        </v-container>
-      </v-flex>
-    </v-layout>
-  </v-container>
-</div> 
-</v-app> 
-</template>
+            
+           <v-flex lg8 sm12 xs12>
+              <v-btn block color="primary" class="logg4" @click="changePassword()" :loading="loading">Submit</v-btn>
+          </v-flex>
+          </v-card-actions>
+          
+            <br><br>
+         </v-card>
+       </v-flex>
+      </v-layout>
+    </v-container>
+    </template>
 
 <script>
 import {APIService} from '../APIService.js';
@@ -83,14 +79,32 @@ export default {
 }
 </script>
 <style scoped lang="css">
-#app{
-  /* margin-left: 450px; */
-  margin-top: 50px;
+.logg{
+  text-decoration: none;
+}
+
+.logg1{
+  text-decoration: none;
+  float: right;
+}
+.logg3{
+  border: 2px solid darkblue;
+}
+.logg5{
+  text-align: center;
   
 }
-/* #login{
-  background: url('/static/back.jpg');
-  background-repeat: no-repeat;
-} */
+.logg6{
+  padding: 8px 0px 0px 2px;
+  margin: 0 0 0 10px;
+
+}
+
+.logg8{
+  text-align: center;
+}
+
+
+
 
 </style>

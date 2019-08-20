@@ -55,7 +55,7 @@
         <v-list-group prepend-icon="event" no-action>
           <v-list-tile slot="activator">
             <v-list-tile-content>
-              <v-list-tile-title> OTHER APPOINTMENTS </v-list-tile-title>
+              <v-list-tile-title> Other Appointments </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile to="/OpinionConsultationList">
