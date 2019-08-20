@@ -766,7 +766,7 @@ const API_URL = apiService.serverUrl;
        } ;
 
         if(this.$refs.form.validate()){
-           let url ="${API_URL}/onlineAppointments/addOnlineAppointment";
+           let url =`${API_URL}/onlineAppointments/addOnlineAppointment`;
       //  let url ="http://localhost:9091/onlineAppointments/addOnlineAppointment";
        const auth = {
         headers: { Authorization: localStorage.getItem('token') },

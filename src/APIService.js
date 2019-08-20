@@ -1,8 +1,8 @@
 import axios from 'axios';
-const API_URL = 'http://server.mahatinnovations.com:9091';
-// const API_URL = 'http://localhost:9091';
+// const API_URL = 'http://server.mahatinnovations.com:9091';
+const API_URL = 'http://localhost:9091';
 export class APIService{
-      serverUrl = 'http://server.mahatinnovations.com:9091';
+      serverUrl = 'http://localhost:9091';
      auth = {
         headers: {Authorization:localStorage.getItem('token')} 
     }
@@ -86,6 +86,11 @@ getStates(){
   const url = `${API_URL}/masters/getstates`;
   
   return axios.get(url,auth).then(response => response.data);
+}
+
+getState(){
+  const url = `${API_URL}/states/`;
+  return axios.get(url).then(response => response.data);
 }
 
 getCities(stateid){
