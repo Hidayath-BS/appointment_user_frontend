@@ -1,4 +1,4 @@
-<template style = "background-color: red">
+<template>
  <v-container fluid class="logg7">
     
         <br><br>
@@ -51,6 +51,7 @@
            <div class="logg8">
               <a href="#" class="logg" @click="register()">New User? Register Here</a> 
             </div>
+           
             <br><br>
          </v-card>
        </v-flex>
@@ -69,7 +70,8 @@ export default {
     loading: false,
     model: {
       username: '',
-      password: ''
+      password: '',
+    
     }
   }),
 
@@ -85,8 +87,8 @@ export default {
     {
       console.log(response);
       
-      if(response.status==200){
-        flag=true
+      if(response.status==200){ 
+        flag=true;
         const token="Bearer"+' '+response.data.token;
         localStorage.setItem('token', token);
         
@@ -180,7 +182,10 @@ export default {
   float: right;
 }
 .logg3{
-  border: 2px solid darkblue;
+  border-top: 3px solid darkblue;
+    border-left: 3px solid darkblue;
+    border-right: 3px solid #29abe2;
+    border-bottom: 3px solid #29abe2
 }
 .logg5{
   text-align: center;

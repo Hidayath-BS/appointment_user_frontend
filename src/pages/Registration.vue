@@ -155,7 +155,6 @@
             </v-card>
           </v-flex>
         </v-layout>
-    
     </v-container>
   </v-content>    
 </v-app>
@@ -186,6 +185,9 @@ const API_URL = apiService.serverUrl;
          id:null,
          formRequest: null,
         displayError: false,
+       
+       
+        
 
 
 
@@ -228,6 +230,7 @@ const API_URL = apiService.serverUrl;
                                   "stateid":this.stateid,
                                   "cityid":this.cityid},auth).then(response=>{
             if(response.status==202){
+              
               this.$router.push("/login");
               }
               else{
@@ -277,7 +280,7 @@ const API_URL = apiService.serverUrl;
 
   .regg7{
     border-radius: 2%;
-    border: 1px solid red;
+    border: 1px solid darkred;
   }
 
   .regg9{
