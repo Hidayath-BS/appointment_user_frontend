@@ -66,6 +66,7 @@
 		   			
 		 <br><br>  
     </v-flex>
+    
     <v-flex md3 offset-md1 xs12>
        <div class="title">Services</div>
                 <v-card v-for="(service) of serviceList" :key="service.id" class="designforser" solo>   <h4> {{ service.services }} </h4>
