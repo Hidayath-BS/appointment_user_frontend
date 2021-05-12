@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "vue": "^2.5.3",
     "vue-axios": "^2.1.1",
     "vue-chartjs": "^3.3.1",
